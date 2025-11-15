@@ -3,6 +3,7 @@ export type Post = {
   content: string;
   author: string;
   date: string;
+  image: string;
 };
 
 export const posts: Post[] = [
@@ -12,6 +13,7 @@ export const posts: Post[] = [
       "Local breweries unite for a collaborative tap list featuring experimental IPAs and crisp lagers.",
     author: "Hiroki",
     date: "2024/05/12",
+    image: "/images/beers/sample01.jpeg",
   },
   {
     title: "Sour Flight Review",
@@ -19,6 +21,7 @@ export const posts: Post[] = [
       "Tasting notes from the new kettle sour lineup with plenty of berry, citrus, and tropical vibes.",
     author: "Mariko",
     date: "2024/05/10",
+    image: "/images/beers/sample02.jpeg",
   },
   {
     title: "Barrel-Aged Secrets",
@@ -26,5 +29,6 @@ export const posts: Post[] = [
       "Behind the scenes at a small batch brewery aging stout in bourbon barrels for over a year.",
     author: "Ken",
     date: "2024/05/08",
+    image: "/images/beers/sample03.jpeg",
   },
 ];
