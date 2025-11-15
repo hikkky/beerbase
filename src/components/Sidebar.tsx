@@ -14,7 +14,7 @@ const navItems = [
 
 export function Sidebar() {
   return (
-    <aside className="w-64 h-full border-r border-gray-200 p-4 sticky top-16 bg-white">
+    <aside className="w-64 min-h-[calc(100vh-4rem)] border-r border-gray-200 p-4 sticky top-16 bg-white flex flex-col">
       <nav>
         <ul className="space-y-4">
           {navItems.map(({ label, Icon }) => (
