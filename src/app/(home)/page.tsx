@@ -1,6 +1,6 @@
-import { Header } from "../_components/Header";
-import { Sidebar } from "../_components/Sidebar";
-import { Footer } from "../_components/Footer";
+import { Header } from "../../components/Header";
+import { Sidebar } from "../../components/Sidebar";
+import { Footer } from "../../components/Footer";
 import { posts } from "./_components/posts";
 import { PostList } from "./_components/PostList";
 
