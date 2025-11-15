@@ -18,7 +18,8 @@ export default function PostPage() {
               新しいビール投稿を作成
             </h1>
             <p className="text-gray-500">
-              味の印象やシチュエーションを記録し、コミュニティと共有しましょう。
+              ビールの味はもちろん、気温や気分、その瞬間のひとことでもOK。
+              思い立ったら気軽に一杯の記録を残しましょう
             </p>
           </div>
           <PostForm />
