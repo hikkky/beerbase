@@ -3,7 +3,7 @@ import {
   HomeIcon,
   MagnifyingGlassIcon,
   UserIcon,
-} from "@/icons";
+} from "@/components/icons";
 
 const navItems = [
   { label: "Home", Icon: HomeIcon },
