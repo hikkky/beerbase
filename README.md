@@ -35,12 +35,12 @@ BEERBASEは、飲んだビールを記録するだけでなく、
 ## 使用技術（Tech Stack）
 | カテゴリ    | 技術                                   |
 | ------- | ------------------------------------ |
-| フロントエンド | Next.js 14, TypeScript, Tailwind CSS |
+| フロントエンド | Next.js 15, TypeScript, Tailwind CSS |
 | バックエンド  | Prisma, Supabase（PostgreSQL）         |
 | 認証      | Supabase Auth（Google予定）              |
 | デプロイ    | Vercel                               |
 | デザイン    | Figma                                |
-| 開発支援    | Cursor, ChatGPT, Claude Code         |
+| 開発支援    | Cursor, ChatGPT         |
 | バージョン管理 | GitHub                               |
 | インフラ    | Supabase（DB / Storage / Auth）        |
 
@@ -58,8 +58,7 @@ BEERBASEは、飲んだビールを記録するだけでなく、
 ```bash
 beerbase/
 ├── app/                      # Next.js App Router 構成
-│   ├── page.tsx              # トップ（ビール一覧）
-│   ├── beers/[id]/page.tsx   # ビール詳細＋レビュー
+│   ├── page.tsx              # トップ
 │   ├── api/                  # API ルート
 │   └── ...
 ├── prisma/
