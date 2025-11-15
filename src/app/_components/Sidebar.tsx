@@ -1,6 +1,6 @@
 export function Sidebar() {
   return (
-    <aside className="w-64 h-full border-r border-gray-200 p-4">
+    <aside className="w-64 h-full border-r border-gray-200 p-4 sticky top-16 bg-white">
       <nav>
         <ul className="space-y-4">
           <li>
