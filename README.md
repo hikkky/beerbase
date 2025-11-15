@@ -57,21 +57,37 @@ BEERBASEは、飲んだビールを記録するだけでなく、
 ## ディレクトリ構成（案）
 ```bash
 beerbase/
-├── app/                      # Next.js App Router 構成
-│   ├── page.tsx              # トップ
-│   ├── api/                  # API ルート
-│   └── ...
-├── prisma/
-│   └── schema.prisma         # Prisma スキーマ
-├── lib/
-│   ├── prisma.ts             # Prisma クライアント
-│   └── supabaseClient.ts     # Supabase クライアント
-├── docs/                     # 要件定義・機能仕様
-│   ├── 01_要件定義.md
-│   ├── 02_機能仕様.md
-│   └── 03_DB設計.md
-├── .env                      # Supabase 接続設定
+├── public/
+│   └── images/
+│       └── beers/            # ダミーのビール画像
+├── src/
+│   ├── app/                  # Next.js App Router
+│   │   ├── (home)/           # トップページ用ルートグループ
+│   │   │   ├── page.tsx
+│   │   │   └── _components/
+│   │   │       ├── PostItem.tsx
+│   │   │       ├── PostList.tsx
+│   │   │       └── posts.ts  # モックデータ
+│   │   ├── (posts)/posts/new/
+│   │   │   ├── page.tsx      # 投稿作成ページ
+│   │   │   └── _components/PostForm.tsx
+│   │   ├── globals.css
+│   │   ├── layout.tsx
+│   │   └── favicon.ico
+│   └── components/           # 共通コンポーネント
+│       ├── Header.tsx
+│       ├── Footer.tsx
+│       ├── Sidebar.tsx
+│       └── icons/
+│           ├── HomeIcon.tsx  # Heroicons ベースのSVG
+│           ├── MagnifyingGlassIcon.tsx
+│           ├── UserIcon.tsx
+│           ├── CogEightTooth.tsx
+│           └── index.ts
 ├── package.json
+├── tsconfig.json
+├── next.config.ts
+├── eslint.config.mjs
 └── README.md
 ```
 
