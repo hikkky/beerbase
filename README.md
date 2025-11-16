@@ -67,7 +67,6 @@ beerbase/
 │   │   │   └── _components/
 │   │   │       ├── PostItem.tsx
 │   │   │       ├── PostList.tsx
-│   │   │       └── posts.ts  # モックデータ
 │   │   ├── (posts)/posts/new/
 │   │   │   ├── page.tsx      # 投稿作成ページ
 │   │   │   └── _components/PostForm.tsx
