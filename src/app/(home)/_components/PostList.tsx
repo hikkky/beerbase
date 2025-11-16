@@ -1,7 +1,11 @@
+import { Post } from "../page";
 import { PostItem } from "./PostItem";
-import { posts } from "./posts";
 
-export function PostList() {
+interface Props {
+  posts: Post[];
+}
+
+export function PostList({ posts }: Props) {
   return (
     <div className="max-w-3xl space-y-6">
       {posts.map((post) => (
