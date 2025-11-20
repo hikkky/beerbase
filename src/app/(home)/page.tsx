@@ -10,6 +10,18 @@ export type Post = {
   author: string;
   created_at: string;
   image_path: string;
+  country?: string;
+  brewery?: string;
+  style?: string;
+  abv?: string;
+  ibu?: string;
+  radar?: {
+    bitterness: number;
+    aroma: number;
+    sweetness: number;
+    body: number;
+    sharpness: number;
+  };
 };
 
 export default async function Home() {

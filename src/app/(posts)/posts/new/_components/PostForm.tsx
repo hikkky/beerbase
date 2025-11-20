@@ -1,11 +1,8 @@
 "use client";
 
-import {
-  ChangeEvent,
-  FormEvent,
-  useMemo,
-  useState,
-} from "react";
+import { ChangeEvent, FormEvent, useState } from "react";
+import { Camera, Coffee, RefreshCw, X } from "lucide-react";
+import { BeerStyles } from "@/components/BeerStyles";
 
 const beerStyles = [
   "IPA",
@@ -14,32 +11,62 @@ const beerStyles = [
   "Stout",
   "Sour",
   "Wheat",
+  "Pale Ale",
+  "Hazy IPA",
+  "Porter",
+  "Amber Ale",
+  "Saison",
+  "Barley Wine",
+  "Belgian Ale",
   "その他",
 ];
 
+type RadarKey = "body" | "aroma" | "bitterness" | "sweetness" | "sharpness";
+
+const radarFields: { key: RadarKey; label: string }[] = [
+  { key: "bitterness", label: "苦味" },
+  { key: "aroma", label: "香り" },
+  { key: "sweetness", label: "甘み" },
+  { key: "body", label: "コク" },
+  { key: "sharpness", label: "キレ" },
+];
+
 type FormData = {
-  title: string;
-  location: string;
+  number: string;
+  name: string;
+  country: string;
+  brewery: string;
   style: string;
-  tastingNotes: string;
-  imageUrl: string;
-  rating: string;
-  tags: string;
+  abv: string;
+  ibu: string;
+  photoUrl: string; // Keeping photoUrl for now, though App.tsx used file upload preview
+  radar: Record<RadarKey, number>;
+  comment: string;
 };
 
 const initialState: FormData = {
-  title: "",
-  location: "",
-  style: beerStyles[0],
-  tastingNotes: "",
-  imageUrl: "",
-  rating: "3",
-  tags: "",
+  number: "",
+  name: "",
+  country: "",
+  brewery: "",
+  style: "",
+  abv: "",
+  ibu: "",
+  photoUrl: "",
+  radar: {
+    bitterness: 3,
+    aroma: 3,
+    sweetness: 3,
+    body: 3,
+    sharpness: 3,
+  },
+  comment: "",
 };
 
 export function PostForm() {
   const [formData, setFormData] = useState<FormData>(initialState);
   const [status, setStatus] = useState<"idle" | "success">("idle");
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
 
   const handleChange = (
     event: ChangeEvent<
@@ -50,237 +77,244 @@ export function PostForm() {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
+  const handleRadarChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = event.target;
+    const key = name as RadarKey;
+    setFormData((prev) => ({
+      ...prev,
+      radar: { ...prev.radar, [key]: Number(value) },
+    }));
+  };
+
+  const handleImageUpload = (e: ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreview(reader.result as string);
+        // In a real app, you'd upload this file and get a URL.
+        // For now, we'll just use the data URL as a placeholder if needed,
+        // but the form still has a photoUrl input for manual entry.
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setStatus("success");
+    // Here you would typically send the data to your backend
+    console.log("Submitting:", formData);
     setTimeout(() => setStatus("idle"), 2400);
   };
 
-  const tagList = useMemo(
-    () =>
-      formData.tags
-        .split(",")
-        .map((tag) => tag.trim())
-        .filter(Boolean),
-    [formData.tags]
-  );
+  const resetForm = () => {
+    setFormData(initialState);
+    setImagePreview(null);
+  };
 
   return (
-    <section className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-      <form
-        onSubmit={handleSubmit}
-        className="lg:col-span-2 bg-white border border-gray-200 rounded-2xl p-6 shadow-sm space-y-6"
-      >
-        <header className="space-y-1">
-          <p className="text-sm font-medium text-amber-700">New Post</p>
-          <h2 className="text-2xl font-semibold text-gray-900">
-            今日のビール体験をシェア
-          </h2>
-          <p className="text-sm text-gray-500">
-            どんな場所で、どんな味わいだったかを記録してみましょう。
-          </p>
-        </header>
+    <div className="w-full max-w-md mx-auto bg-[#fdfbf7] shadow-2xl p-6 border-l border-gray-200 font-hand text-gray-700 relative">
+      <BeerStyles />
+      
+      <div className="flex justify-between items-center mb-6 border-b border-gray-200 pb-4">
+        <h2 className="text-xl font-bold flex items-center gap-2 text-gray-800">
+          <Coffee className="w-5 h-5 text-orange-500" />
+          ビアノートを編集
+        </h2>
+      </div>
 
-        <div className="space-y-1.5">
-          <label
-            htmlFor="title"
-            className="text-sm font-semibold text-gray-700"
-          >
-            タイトル
-          </label>
-          <input
-            id="title"
-            name="title"
-            value={formData.title}
+      <form onSubmit={handleSubmit} className="space-y-6">
+        {/* 画像アップロード */}
+        <div className="group relative border-2 border-dashed border-gray-300 rounded-xl p-6 text-center hover:bg-white hover:border-orange-300 transition-all cursor-pointer bg-gray-50 overflow-hidden">
+          <input 
+            type="file" 
+            accept="image/*" 
+            onChange={handleImageUpload} 
+            className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" 
+          />
+          {imagePreview ? (
+            <img src={imagePreview} alt="Preview" className="w-full h-48 object-cover rounded-lg" />
+          ) : (
+            <>
+              <Camera className="w-8 h-8 text-gray-400 mx-auto mb-2 group-hover:text-orange-500 transition-colors" />
+              <p className="text-sm text-gray-500">写真を選択または撮影</p>
+            </>
+          )}
+        </div>
+
+        {/* URL Input fallback */}
+        <div className="hidden">
+           <input
+            name="photoUrl"
+            value={formData.photoUrl}
             onChange={handleChange}
-            placeholder="例: フルーティなNE IPAに感動"
-            className="w-full rounded-xl border border-gray-200 px-4 py-3 text-base focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent"
+            placeholder="Or enter Image URL"
           />
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="space-y-1.5">
-            <label
-              htmlFor="location"
-              className="text-sm font-semibold text-gray-700"
-            >
-              店舗 / 体験場所
-            </label>
-            <input
-              id="location"
-              name="location"
-              value={formData.location}
-              onChange={handleChange}
-              placeholder="例: Yokohama Hop Stand"
-              className="w-full rounded-xl border border-gray-200 px-4 py-3 text-base focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent"
-            />
+        {/* 基本情報 */}
+        <div className="space-y-4 bg-white p-4 rounded-lg shadow-sm border border-gray-100">
+          <div className="grid grid-cols-4 gap-3">
+            <div className="col-span-1">
+              <label className="text-xs font-bold text-gray-500 mb-1 block">No.</label>
+              <input 
+                type="text" 
+                name="number" 
+                value={formData.number} 
+                onChange={handleChange} 
+                className="w-full border-b border-gray-300 py-1 focus:border-orange-400 focus:outline-none bg-transparent font-eng-hand" 
+                placeholder="001"
+              />
+            </div>
+            <div className="col-span-3">
+              <label className="text-xs font-bold text-gray-500 mb-1 block">ビール名</label>
+              <input 
+                type="text" 
+                name="name" 
+                value={formData.name} 
+                onChange={handleChange} 
+                className="w-full border-b border-gray-300 py-1 focus:border-orange-400 focus:outline-none bg-transparent font-serif font-bold" 
+                placeholder="Beer Name"
+              />
+            </div>
           </div>
-          <div className="space-y-1.5">
-            <label
-              htmlFor="style"
-              className="text-sm font-semibold text-gray-700"
-            >
-              スタイル
-            </label>
-            <select
-              id="style"
-              name="style"
-              value={formData.style}
-              onChange={handleChange}
-              className="w-full rounded-xl border border-gray-200 px-4 py-3 text-base bg-white focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent"
-            >
-              {beerStyles.map((style) => (
-                <option key={style} value={style}>
-                  {style}
-                </option>
-              ))}
-            </select>
+
+          <div className="grid grid-cols-2 gap-3">
+             <div>
+              <label className="text-xs font-bold text-gray-500 mb-1 block">生産地</label>
+              <input 
+                type="text" 
+                name="country" 
+                value={formData.country} 
+                onChange={handleChange} 
+                className="w-full border-b border-gray-300 py-1 focus:border-orange-400 focus:outline-none bg-transparent text-sm" 
+                placeholder="Japan"
+              />
+            </div>
+            <div>
+              <label className="text-xs font-bold text-gray-500 mb-1 block">醸造所</label>
+              <input 
+                type="text" 
+                name="brewery" 
+                value={formData.brewery} 
+                onChange={handleChange} 
+                className="w-full border-b border-gray-300 py-1 focus:border-orange-400 focus:outline-none bg-transparent text-sm" 
+                placeholder="Brewery Name"
+              />
+            </div>
+          </div>
+
+          <div>
+            <label className="text-xs font-bold text-gray-500 mb-1 block">スタイル</label>
+            <input 
+                type="text" 
+                name="style" 
+                value={formData.style} 
+                onChange={handleChange} 
+                list="style-options"
+                className="w-full border-b border-gray-300 py-1 focus:border-orange-400 focus:outline-none bg-transparent text-sm" 
+                placeholder="Select or type style"
+              />
+              <datalist id="style-options">
+                {beerStyles.map(style => <option key={style} value={style} />)}
+              </datalist>
+          </div>
+
+          <div className="grid grid-cols-2 gap-3">
+             <div>
+              <label className="text-xs font-bold text-gray-500 mb-1 block">ABV (%)</label>
+              <input 
+                type="number" 
+                step="0.1"
+                name="abv" 
+                value={formData.abv} 
+                onChange={handleChange} 
+                className="w-full border-b border-gray-300 py-1 focus:border-orange-400 focus:outline-none bg-transparent font-eng-hand text-center" 
+                placeholder="5.0"
+              />
+            </div>
+            <div>
+              <label className="text-xs font-bold text-gray-500 mb-1 block">IBU</label>
+              <input 
+                type="number" 
+                step="1"
+                name="ibu" 
+                value={formData.ibu} 
+                onChange={handleChange} 
+                className="w-full border-b border-gray-300 py-1 focus:border-orange-400 focus:outline-none bg-transparent font-eng-hand text-center" 
+                placeholder="20"
+              />
+            </div>
           </div>
         </div>
 
-        <div className="space-y-1.5">
-          <label
-            htmlFor="tastingNotes"
-            className="text-sm font-semibold text-gray-700"
-          >
-            テイスティングノート
-          </label>
-          <textarea
-            id="tastingNotes"
-            name="tastingNotes"
-            value={formData.tastingNotes}
-            onChange={handleChange}
-            placeholder="香り・味わい・余韻など感じたことを自由に書いてください。"
-            rows={6}
-            className="w-full rounded-2xl border border-gray-200 px-4 py-3 text-base focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent"
+        {/* チャート入力 */}
+        <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-100">
+          <div className="flex justify-between items-center mb-4">
+            <h3 className="text-sm font-bold text-gray-600">味わいチャート</h3>
+            <button 
+              type="button"
+              className="text-gray-400 hover:text-orange-500" 
+              onClick={() => setFormData(prev => ({...prev, radar: initialState.radar}))}
+            >
+              <RefreshCw size={14} />
+            </button>
+          </div>
+          <div className="space-y-3">
+            {radarFields.map(({ key, label }) => (
+              <div key={key} className="flex items-center gap-3 text-sm">
+                <span className="w-16 text-gray-500 font-medium text-xs">
+                  {label}
+                </span>
+                <input 
+                  type="range" min="0" max="5" 
+                  name={key}
+                  value={formData.radar[key]} 
+                  onChange={handleRadarChange}
+                  className="flex-1 h-1 bg-gray-200 rounded-full appearance-none cursor-pointer accent-orange-500"
+                />
+                <span className="w-4 font-eng-hand text-right text-gray-600">{formData.radar[key]}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* コメント */}
+        <div>
+          <label className="text-xs font-bold text-gray-500 mb-2 block">メモ・感想</label>
+          <textarea 
+            name="comment" 
+            rows={3}
+            value={formData.comment} 
+            onChange={handleChange} 
+            className="w-full bg-white border border-gray-200 rounded-lg p-3 text-sm focus:border-orange-400 focus:outline-none resize-none shadow-sm"
+            placeholder="どんな味でしたか？"
           />
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="space-y-1.5">
-            <label
-              htmlFor="imageUrl"
-              className="text-sm font-semibold text-gray-700"
-            >
-              写真URL
-            </label>
-            <input
-              id="imageUrl"
-              name="imageUrl"
-              value={formData.imageUrl}
-              onChange={handleChange}
-              placeholder="https://example.com/beer.jpg"
-              className="w-full rounded-xl border border-gray-200 px-4 py-3 text-base focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent"
-            />
-          </div>
-          <div className="space-y-1.5">
-            <label
-              htmlFor="tags"
-              className="text-sm font-semibold text-gray-700"
-            >
-              タグ (カンマ区切り)
-            </label>
-            <input
-              id="tags"
-              name="tags"
-              value={formData.tags}
-              onChange={handleChange}
-              placeholder="#hazy,#citrus,#weekend"
-              className="w-full rounded-xl border border-gray-200 px-4 py-3 text-base focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent"
-            />
-          </div>
-        </div>
-
-        <div className="space-y-1.5">
-          <label
-            htmlFor="rating"
-            className="text-sm font-semibold text-gray-700 flex items-center justify-between"
+        <div className="flex gap-3">
+          <button 
+            type="submit" 
+            className="flex-1 bg-gray-800 text-white py-3 rounded-lg font-bold hover:bg-gray-700 transition-colors shadow-lg"
           >
-            <span>満足度</span>
-            <span className="text-amber-600 font-semibold">
-              {Number(formData.rating).toFixed(1)}
-            </span>
-          </label>
-          <input
-            type="range"
-            min="1"
-            max="5"
-            step="0.5"
-            id="rating"
-            name="rating"
-            value={formData.rating}
-            onChange={handleChange}
-            className="w-full accent-amber-500"
-          />
-        </div>
-
-        <div className="flex items-center gap-4">
-          <button
-            type="submit"
-            className="px-6 py-3 rounded-full bg-black text-white font-semibold hover:opacity-80 transition"
-          >
-            投稿する
+            書き込み完了
           </button>
-          <button
-            type="button"
-            onClick={() => setFormData(initialState)}
-            className="px-4 py-3 rounded-full border border-gray-300 text-sm font-medium hover:border-gray-400 transition"
+           <button 
+            type="button" 
+            onClick={resetForm}
+            className="px-4 py-3 rounded-lg border border-gray-300 font-bold hover:bg-gray-50 transition-colors"
           >
             リセット
           </button>
-          {status === "success" && (
-            <p className="text-sm text-green-600">下書きとして保存しました。</p>
-          )}
         </div>
-      </form>
-
-      <aside className="bg-gradient-to-b from-amber-100 via-white to-white border border-amber-200 rounded-2xl p-6 space-y-4 shadow-sm">
-        <p className="text-sm font-semibold text-amber-700 tracking-wide">
-          PREVIEW
-        </p>
-        <div className="space-y-2">
-          <h3 className="text-2xl font-bold text-gray-900">
-            {formData.title || "タイトルがここに表示されます"}
-          </h3>
-          <p className="text-sm text-gray-500">
-            {formData.location || "店舗・場所の情報がここに表示されます"}
+        
+        {status === "success" && (
+          <p className="text-center text-sm text-green-600 font-bold animate-pulse">
+            保存しました！
           </p>
-          <p className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-gray-600">
-            <span className="px-2 py-1 rounded-full bg-white border border-gray-200 text-gray-700">
-              {formData.style}
-            </span>
-            <span className="px-2 py-1 rounded-full bg-white border border-gray-200 text-amber-700">
-              ★ {Number(formData.rating).toFixed(1)}
-            </span>
-          </p>
-        </div>
-        <div className="w-full h-48 rounded-2xl border border-dashed border-amber-200 flex items-center justify-center text-sm text-amber-700 bg-white">
-          {formData.imageUrl ? (
-            <img
-              src={formData.imageUrl}
-              alt="preview"
-              className="w-full h-full object-cover rounded-2xl"
-            />
-          ) : (
-            <span>写真URLを入力するとプレビューできます</span>
-          )}
-        </div>
-        <p className="text-sm text-gray-700 whitespace-pre-wrap leading-relaxed">
-          {formData.tastingNotes || "テイスティングノートのプレビューがここに表示されます。"}
-        </p>
-        {tagList.length > 0 && (
-          <div className="flex flex-wrap gap-2">
-            {tagList.map((tag) => (
-              <span
-                key={tag}
-                className="px-3 py-1 rounded-full bg-white border border-gray-200 text-xs font-semibold text-gray-600"
-              >
-                {tag.startsWith("#") ? tag : `#${tag}`}
-              </span>
-            ))}
-          </div>
         )}
-      </aside>
-    </section>
+      </form>
+    </div>
   );
 }

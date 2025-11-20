@@ -2,8 +2,21 @@ import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 import { Sidebar } from "@/components/Sidebar";
 import { PostForm } from "./_components/PostForm";
+import { supabase } from "@/lib/supabase/supabaseClient";
 
-export default function PostPage() {
+export type BeerStyles = {
+  title: string;
+  content: string;
+  author: string;
+  created_at: string;
+  image_path: string;
+};
+
+export default async function PostPage() {
+  const { data: beerStyles, error } = await supabase
+    .from("beer_styles")
+    .select("*");
+
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
