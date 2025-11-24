@@ -1,0 +1,273 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["multiSchema"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  schemas  = ["public", "auth"]
+}
+
+//
+// ========================
+//   Auth Users（唯一使う）
+// ========================
+//
+
+model User {
+  id            String           @id @db.Uuid
+  email         String?          @db.VarChar(255)
+  createdAt     DateTime?        @map("created_at") @db.Timestamptz(6)
+  updatedAt     DateTime?        @map("updated_at") @db.Timestamptz(6)
+
+  // Relation
+  beerPosts     BeerPost[]
+
+  @@map("users")
+  @@schema("auth")
+}
+
+//
+// ========================
+//   BEERBASE（有効モデル）
+// ========================
+//
+
+model BeerPost {
+  id               BigInt           @id @default(autoincrement())
+  userId           String           @map("user_id") @db.Uuid
+  beerName         String           @map("beer_name")
+  breweryName      String?          @map("brewery_name")
+  abv              Decimal?         @db.Decimal(4,1)
+  ibu              Int?
+  comment          String?
+  bodyScore        Decimal          @map("body_score") @db.Decimal(2,1)
+  sournessScore    Decimal          @map("sourness_score") @db.Decimal(2,1)
+  sweetnessScore   Decimal          @map("sweetness_score") @db.Decimal(2,1)
+  aromaScore       Decimal          @map("aroma_score") @db.Decimal(2,1)
+  bitternessScore  Decimal          @map("bitterness_score") @db.Decimal(2,1)
+  countryCode      String?          @map("country_code") @db.Char(2)
+  createdAt        DateTime         @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt        DateTime         @default(now()) @map("updated_at") @db.Timestamptz(6)
+
+  styleId          BigInt?          @map("style_id")
+  styleCustom      String?          @map("style_custom")
+
+  // Relations
+  images           BeerPostImage[]
+  style            BeerStyle?       @relation(fields: [styleId], references: [id])
+  user             User             @relation(fields: [userId], references: [id])
+
+  @@map("beer_posts")
+  @@schema("public")
+}
+
+model BeerPostImage {
+  id         BigInt      @id @default(autoincrement())
+  postId     BigInt      @map("post_id")
+  imageUrl   String       @map("image_url")
+  createdAt  DateTime     @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt  DateTime     @default(now()) @map("updated_at") @db.Timestamptz(6)
+
+  post       BeerPost     @relation(fields: [postId], references: [id])
+
+  @@map("beer_post_images")
+  @@schema("public")
+}
+
+model BeerStyle {
+  id         BigInt       @id @default(autoincrement())
+  name       String
+  category   String?
+  createdAt  DateTime     @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  beerPosts  BeerPost[]
+
+  @@map("beer_styles")
+  @@schema("public")
+}
+
+//
+// ========================
+//   ここから下すべて 
+// ========================
+//
+
+model audit_log_entries {
+  instance_id String?   @db.Uuid
+  id          String    @id @db.Uuid
+  payload     Json?     @db.Json
+  created_at  DateTime? @db.Timestamptz(6)
+  ip_address  String    @default("") @db.VarChar(64)
+  @@schema("auth")
+}
+
+model flow_state {
+  id String @id @db.Uuid
+  @@schema("auth")
+}
+
+model identities {
+  id String @id @db.Uuid
+  @@schema("auth")
+}
+
+model instances {
+  id String @id @db.Uuid
+  @@schema("auth")
+  
+}
+
+model mfa_amr_claims {
+  id String @id @db.Uuid
+  @@schema("auth")
+  
+}
+
+model mfa_challenges {
+  id String @id @db.Uuid
+  @@schema("auth")
+  
+}
+
+model mfa_factors {
+  id String @id @db.Uuid
+  @@schema("auth")
+  
+}
+
+model oauth_authorizations {
+  id String @id @db.Uuid
+  @@schema("auth")
+  
+}
+
+model oauth_clients {
+  id String @id @db.Uuid
+  @@schema("auth")
+  
+}
+
+model oauth_consents {
+  id String @id @db.Uuid
+  @@schema("auth")
+  
+}
+
+model one_time_tokens {
+  id String @id @db.Uuid
+  @@schema("auth")
+  
+}
+
+model saml_providers {
+  id String @id @db.Uuid
+  @@schema("auth")
+  
+}
+
+model saml_relay_states {
+  id String @id @db.Uuid
+  @@schema("auth")
+  
+}
+
+model schema_migrations {
+  version String @id @db.VarChar(255)
+  @@schema("auth")
+  
+}
+
+model sessions {
+  id String @id @db.Uuid
+  @@schema("auth")
+  
+}
+
+model sso_domains {
+  id String @id @db.Uuid
+  @@schema("auth")
+  
+}
+
+model sso_providers {
+  id String @id @db.Uuid
+  @@schema("auth")
+  
+}
+
+//
+// enums も全部 ignore
+//
+
+enum aal_level {
+  aal1
+  aal2
+  aal3
+  @@schema("auth")
+  
+}
+
+enum code_challenge_method {
+  s256
+  plain
+  @@schema("auth")
+  
+}
+
+enum factor_status {
+  unverified
+  verified
+  @@schema("auth")
+  
+}
+
+enum factor_type {
+  totp
+  webauthn
+  phone
+  @@schema("auth")
+  
+}
+
+enum oauth_authorization_status {
+  pending
+  approved
+  denied
+  expired
+  @@schema("auth")
+  
+}
+
+enum oauth_client_type {
+  public
+  confidential
+  @@schema("auth")
+  
+}
+
+enum oauth_registration_type {
+  dynamic
+  manual
+  @@schema("auth")
+  
+}
+
+enum oauth_response_type {
+  code
+  @@schema("auth")
+  
+}
+
+enum one_time_token_type {
+  confirmation_token
+  reauthentication_token
+  recovery_token
+  email_change_token_new
+  email_change_token_current
+  phone_change_token
+  @@schema("auth")
+  
+}
+
