@@ -2,8 +2,11 @@ import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 import { Sidebar } from "@/components/Sidebar";
 import { PostForm } from "./_components/PostForm";
+import { fetchBeerStyles } from "@/components/fetchBeerStyles";
 
-export default function PostPage() {
+export default async function PostPage() {
+  const beerStyles = await fetchBeerStyles();
+
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
@@ -22,7 +25,7 @@ export default function PostPage() {
               思い立ったら気軽に一杯の記録を残しましょう
             </p>
           </div>
-          <PostForm />
+          <PostForm beerStyles={beerStyles} />
         </main>
       </div>
       <Footer />
