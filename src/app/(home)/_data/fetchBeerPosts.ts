@@ -37,6 +37,7 @@ export async function fetchBeerPosts() {
           name: true,
         },
       },
+      styleCustom: true,
     },
   });
   return beerPosts;
