@@ -233,54 +233,6 @@ export function PostForm() {
           )}
         </div>
       </form>
-
-      <aside className="bg-gradient-to-b from-amber-100 via-white to-white border border-amber-200 rounded-2xl p-6 space-y-4 shadow-sm">
-        <p className="text-sm font-semibold text-amber-700 tracking-wide">
-          PREVIEW
-        </p>
-        <div className="space-y-2">
-          <h3 className="text-2xl font-bold text-gray-900">
-            {formData.title || "タイトルがここに表示されます"}
-          </h3>
-          <p className="text-sm text-gray-500">
-            {formData.location || "店舗・場所の情報がここに表示されます"}
-          </p>
-          <p className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-gray-600">
-            <span className="px-2 py-1 rounded-full bg-white border border-gray-200 text-gray-700">
-              {formData.style}
-            </span>
-            <span className="px-2 py-1 rounded-full bg-white border border-gray-200 text-amber-700">
-              ★ {Number(formData.rating).toFixed(1)}
-            </span>
-          </p>
-        </div>
-        <div className="w-full h-48 rounded-2xl border border-dashed border-amber-200 flex items-center justify-center text-sm text-amber-700 bg-white">
-          {formData.imageUrl ? (
-            <img
-              src={formData.imageUrl}
-              alt="preview"
-              className="w-full h-full object-cover rounded-2xl"
-            />
-          ) : (
-            <span>写真URLを入力するとプレビューできます</span>
-          )}
-        </div>
-        <p className="text-sm text-gray-700 whitespace-pre-wrap leading-relaxed">
-          {formData.tastingNotes || "テイスティングノートのプレビューがここに表示されます。"}
-        </p>
-        {tagList.length > 0 && (
-          <div className="flex flex-wrap gap-2">
-            {tagList.map((tag) => (
-              <span
-                key={tag}
-                className="px-3 py-1 rounded-full bg-white border border-gray-200 text-xs font-semibold text-gray-600"
-              >
-                {tag.startsWith("#") ? tag : `#${tag}`}
-              </span>
-            ))}
-          </div>
-        )}
-      </aside>
-    </section>
+        </section>
   );
 }
