@@ -10,6 +10,22 @@ export async function createPost(formData: FormData) {
   const abvRaw = formData.get("abv");
   const ibuRaw = formData.get("ibu");
   const comment = formData.get("comment");
+  const bodyScoreRaw = formData.get("bodyScore");
+  const sournessScoreRaw = formData.get("sournessScore");
+  const sweetnessScoreRaw = formData.get("sweetnessScore");
+  const aromaScoreRaw = formData.get("aromaScore");
+  const bitternessScoreRaw = formData.get("bitternessScore");
+
+  const parseScore = (label: string, raw: FormDataEntryValue | null) => {
+    if (typeof raw !== "string" || raw.trim().length === 0) {
+      throw new Error(`${label}を入力してください。`);
+    }
+    const value = parseFloat(raw);
+    if (Number.isNaN(value)) {
+      throw new Error(`${label}は数値で入力してください。`);
+    }
+    return value;
+  };
 
   if (typeof beerName !== "string" || beerName.trim().length === 0) {
     throw new Error("ビール名を入力してください。");
@@ -28,6 +44,11 @@ export async function createPost(formData: FormData) {
     typeof ibuRaw === "string" && ibuRaw.trim().length > 0
       ? parseInt(ibuRaw, 10)
       : null;
+  const bodyScore = parseScore("ボディ", bodyScoreRaw);
+  const sournessScore = parseScore("酸味", sournessScoreRaw);
+  const sweetnessScore = parseScore("甘味", sweetnessScoreRaw);
+  const aromaScore = parseScore("香り", aromaScoreRaw);
+  const bitternessScore = parseScore("苦味", bitternessScoreRaw);
 
   // 仮のユーザー（先頭のユーザー）に紐づける。実運用では認証ユーザーのIDを使う。
   const user = await prisma.user.findFirst();
@@ -47,12 +68,11 @@ export async function createPost(formData: FormData) {
           : null,
       styleId: BigInt(beerStyle),
       userId: user.id,
-      // 必須スコア系は暫定で0を入れる（入力項目が揃ったら更新）
-      bodyScore: 3,
-      sournessScore: 3,
-      sweetnessScore: 3,
-      aromaScore: 3,
-      bitternessScore: 3,
+      bodyScore,
+      sournessScore,
+      sweetnessScore,
+      aromaScore,
+      bitternessScore,
       countryCode: typeof countryCode === "string" ? countryCode : null,
     },
   });

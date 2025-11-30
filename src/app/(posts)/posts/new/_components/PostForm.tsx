@@ -159,6 +159,108 @@ export function PostForm({ beerStyles }: Props) {
               className="w-full rounded-xl border border-gray-200 px-4 py-3 text-base focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent"
             />
           </div>
+        </div>
+        <div className="space-y-3">
+          <p className="text-sm font-semibold text-gray-700">
+            レーダーチャート項目
+          </p>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="space-y-1.5">
+              <label
+                htmlFor="bodyScore"
+                className="text-sm font-semibold text-gray-700"
+              >
+                ボディ
+              </label>
+              <input
+                id="bodyScore"
+                name="bodyScore"
+                type="number"
+                step="0.1"
+                min="0"
+                max="5"
+                placeholder="3.0"
+                required
+                className="w-full rounded-xl border border-gray-200 px-4 py-3 text-base focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent"
+              />
+            </div>
+            <div className="space-y-1.5">
+              <label
+                htmlFor="sournessScore"
+                className="text-sm font-semibold text-gray-700"
+              >
+                酸味
+              </label>
+              <input
+                id="sournessScore"
+                name="sournessScore"
+                type="number"
+                step="0.1"
+                min="0"
+                max="5"
+                placeholder="3.0"
+                required
+                className="w-full rounded-xl border border-gray-200 px-4 py-3 text-base focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent"
+              />
+            </div>
+            <div className="space-y-1.5">
+              <label
+                htmlFor="sweetnessScore"
+                className="text-sm font-semibold text-gray-700"
+              >
+                甘味
+              </label>
+              <input
+                id="sweetnessScore"
+                name="sweetnessScore"
+                type="number"
+                step="0.1"
+                min="0"
+                max="5"
+                placeholder="3.0"
+                required
+                className="w-full rounded-xl border border-gray-200 px-4 py-3 text-base focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent"
+              />
+            </div>
+            <div className="space-y-1.5">
+              <label
+                htmlFor="aromaScore"
+                className="text-sm font-semibold text-gray-700"
+              >
+                香り
+              </label>
+              <input
+                id="aromaScore"
+                name="aromaScore"
+                type="number"
+                step="0.1"
+                min="0"
+                max="5"
+                placeholder="3.0"
+                required
+                className="w-full rounded-xl border border-gray-200 px-4 py-3 text-base focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent"
+              />
+            </div>
+            <div className="space-y-1.5">
+              <label
+                htmlFor="bitternessScore"
+                className="text-sm font-semibold text-gray-700"
+              >
+                苦味
+              </label>
+              <input
+                id="bitternessScore"
+                name="bitternessScore"
+                type="number"
+                step="0.1"
+                min="0"
+                max="5"
+                placeholder="3.0"
+                required
+                className="w-full rounded-xl border border-gray-200 px-4 py-3 text-base focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent"
+              />
+            </div>
+          </div>
           <div className="space-y-1.5">
             <label
               htmlFor="comment"
