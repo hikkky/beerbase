@@ -6,20 +6,21 @@ const scoreSchema = z
   .max(5, "5以下で入力してください。")
   .refine((v) => Number.isInteger(v * 2), "0.5刻みで入力してください。");
 
+const preprocessNullable = (v: unknown) =>
+  v === "" || v === null || typeof v === "undefined" ? undefined : v;
+
 const nullableNumber = z
   .preprocess(
-    (v) => (v === "" || v === null ? undefined : v),
-    z.coerce.number().finite()
+    preprocessNullable,
+    z.coerce.number().finite().optional()
   )
-  .optional()
   .transform((v) => (typeof v === "number" ? v : null));
 
 const nullableString = z
   .preprocess(
-    (v) => (v === "" || v === null ? undefined : v),
-    z.string().trim()
+    preprocessNullable,
+    z.string().trim().optional()
   )
-  .optional()
   .transform((v) => (typeof v === "string" ? v : null));
 
 export const postSchema = z.object({
