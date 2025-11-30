@@ -9,7 +9,7 @@ export function PostList({ beerPosts }: Props) {
   return (
     <div className="max-w-3xl space-y-6">
       {beerPosts.map((beerPost) => (
-        <PostItem key={beerPost.beerName} post={beerPost} />
+        <PostItem key={beerPost.id.toString()} post={beerPost} />
       ))}
     </div>
   );
