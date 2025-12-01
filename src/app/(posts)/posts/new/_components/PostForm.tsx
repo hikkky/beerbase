@@ -1,8 +1,8 @@
 "use client";
 
 import { BeerStyles } from "@/components/fetchBeerStyles";
-import { createPost } from "./_action/createPost";
 import { useState } from "react";
+import { createPost } from "./_action/createPost";
 
 interface Props {
   beerStyles: BeerStyles;
@@ -10,6 +10,8 @@ interface Props {
 
 export function PostForm({ beerStyles }: Props) {
   const [isPending, setIsPending] = useState<boolean>(false);
+  const [errorMessages, setErrorMessages] = useState<string[]>([]);
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
   const countryCodes = [
     { code: "JP", name: "Japan" },
@@ -28,17 +30,24 @@ export function PostForm({ beerStyles }: Props) {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsPending(true);
+    setErrorMessages([]);
+    setSuccessMessage(null);
 
     const formData = new FormData(e.currentTarget);
     const result = await createPost(formData);
     setIsPending(false);
-    if (result.success) {
-      // 投稿成功時の処理（例: リダイレクトやメッセージ表示）
-      console.log("Post created with ID:", result.postId);
-    } else {
-      // エラーハンドリング
-      console.error("Failed to create post");
+
+    if (!result.success) {
+      const messages = result.errors?.map(
+        (err: { message: string }) => err.message
+      ) ?? ["投稿に失敗しました"];
+
+      setErrorMessages(messages);
+      return;
     }
+
+    setErrorMessages([]);
+    setSuccessMessage("投稿しました");
   };
 
   return (
@@ -67,7 +76,7 @@ export function PostForm({ beerStyles }: Props) {
           <input
             id="beerName"
             name="beerName"
-            placeholder="よなよあエール"
+            placeholder="よなよなエール"
             className="w-full rounded-xl border border-gray-200 px-4 py-3 text-base focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent"
           />
         </div>
@@ -284,9 +293,21 @@ export function PostForm({ beerStyles }: Props) {
             disabled={isPending}
             className="px-6 py-3 rounded-full bg-black text-white font-semibold hover:opacity-80 transition"
           >
-            投稿する
+            {isPending ? "送信中..." : "投稿する"}
           </button>
         </div>
+        {errorMessages.length > 0 && (
+          <div className="text-sm text-red-600 bg-red-50 border border-red-100 rounded-lg px-3 py-2">
+            {errorMessages.map((error, index) => (
+              <p key={index}>{error}</p>
+            ))}
+          </div>
+        )}
+        {successMessage && (
+          <p className="text-sm text-green-700 bg-green-50 border border-green-100 rounded-lg px-3 py-2">
+            {successMessage}
+          </p>
+        )}
       </form>
     </section>
   );
