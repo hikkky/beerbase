@@ -17,6 +17,7 @@ export async function createPost(formData: FormData) {
     sweetnessScore: formData.get("sweetnessScore"),
     aromaScore: formData.get("aromaScore"),
     bitternessScore: formData.get("bitternessScore"),
+    imagePath: formData.get("imagePath"),
   });
 
   if (!parsed.success) {
@@ -36,22 +37,33 @@ export async function createPost(formData: FormData) {
   }
 
   try {
-    await prisma.beerPost.create({
-      data: {
-        beerName: parsed.data.beerName,
-        breweryName: parsed.data.breweryName,
-        abv: parsed.data.abv,
-        ibu: parsed.data.ibu,
-        comment: parsed.data.comment,
-        styleId: parsed.data.beerStyle ? BigInt(parsed.data.beerStyle) : null,
-        userId: user.id,
-        bodyScore: parsed.data.bodyScore,
-        sournessScore: parsed.data.sournessScore,
-        sweetnessScore: parsed.data.sweetnessScore,
-        aromaScore: parsed.data.aromaScore,
-        bitternessScore: parsed.data.bitternessScore,
-        countryCode: parsed.data.countryCode,
-      },
+    await prisma.$transaction(async (tx) => {
+      const post = await prisma.beerPost.create({
+        data: {
+          beerName: parsed.data.beerName,
+          breweryName: parsed.data.breweryName,
+          abv: parsed.data.abv,
+          ibu: parsed.data.ibu,
+          comment: parsed.data.comment,
+          styleId: parsed.data.beerStyle ? BigInt(parsed.data.beerStyle) : null,
+          userId: user.id,
+          bodyScore: parsed.data.bodyScore,
+          sournessScore: parsed.data.sournessScore,
+          sweetnessScore: parsed.data.sweetnessScore,
+          aromaScore: parsed.data.aromaScore,
+          bitternessScore: parsed.data.bitternessScore,
+          countryCode: parsed.data.countryCode,
+        },
+      });
+
+      if (parsed.data.imagePath !== null) {
+        await prisma.beerPostImage.create({
+          data: {
+            postId: post.id,
+            imageUrl: parsed.data.imagePath,
+          },
+        });
+      }
     });
 
     return {

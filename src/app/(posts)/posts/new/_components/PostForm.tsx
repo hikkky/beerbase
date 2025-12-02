@@ -1,6 +1,7 @@
 "use client";
 
 import { BeerStyles } from "@/components/fetchBeerStyles";
+import { supabase } from "@/lib/supabase/supabaseClient";
 import { useState } from "react";
 import { createPost } from "./_action/createPost";
 
@@ -34,6 +35,22 @@ export function PostForm({ beerStyles }: Props) {
     setSuccessMessage(null);
 
     const formData = new FormData(e.currentTarget);
+    const imageFile = formData.get("image") as File | null;
+
+    if (imageFile && imageFile.size > 0) {
+      const filePath = `beer-posts/${Date.now()}-${imageFile.name}`;
+      const { error, data } = await supabase.storage
+        .from("images")
+        .upload(filePath, imageFile);
+      if (error) {
+        setIsPending(false);
+        setErrorMessages([error.message]);
+        return;
+      }
+      formData.set("imagePath", data.path);
+    }
+    formData.delete("image");
+
     const result = await createPost(formData);
     setIsPending(false);
 
@@ -283,6 +300,21 @@ export function PostForm({ beerStyles }: Props) {
               placeholder="最高"
               rows={3}
               className="w-full rounded-xl border border-gray-200 px-4 py-3 text-base focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent"
+            />
+          </div>
+          <div className="space-y-1.5">
+            <label
+              htmlFor="image"
+              className="text-sm font-semibold text-gray-700"
+            >
+              画像
+            </label>
+            <input
+              id="image"
+              name="image"
+              type="file"
+              accept="image/*"
+              className="w-full rounded-xl border border-gray-200 px-4 py-3 text-base focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent file:mr-4 file:rounded-lg file:border-none file:bg-amber-50 file:px-3 file:py-2 file:text-amber-700"
             />
           </div>
         </div>
