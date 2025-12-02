@@ -31,6 +31,7 @@ export const postSchema = z.object({
   abv: nullableNumber,
   ibu: nullableNumber,
   comment: nullableString,
+  imagePath: nullableString,
   bodyScore: scoreSchema,
   sournessScore: scoreSchema,
   sweetnessScore: scoreSchema,
