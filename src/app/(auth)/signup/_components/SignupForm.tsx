@@ -60,12 +60,17 @@ export function SignupForm() {
         </div>
 
         <div className="space-y-1.5">
-          <label
-            htmlFor="password"
-            className="text-sm font-semibold text-gray-700"
-          >
-            パスワード
-          </label>
+          <div>
+            <label
+              htmlFor="password"
+              className="text-sm font-semibold text-gray-700"
+            >
+              パスワード
+            </label>
+            <p className="text-xs text-gray-700">
+              英数字6文字以上で入力してください
+            </p>
+          </div>
           <input
             id="password"
             type="password"
