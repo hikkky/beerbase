@@ -11,10 +11,10 @@
   "dependencies": {
     "@prisma/client": "^5.18.0",
     "@supabase/supabase-js": "^2.81.1",
-    "next": "^15.1.6",
+    "next": "^15.1.9",
     "prisma": "^5.18.0",
-    "react": "19.2.0",
-    "react-dom": "19.2.0",
+    "react": "^19.2.1",
+    "react-dom": "^19.2.1",
     "zod": "^4.1.13"
   },
   "devDependencies": {
