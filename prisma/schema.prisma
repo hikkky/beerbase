@@ -53,6 +53,7 @@ model User {
   one_time_tokens             one_time_tokens[]
   sessions                    sessions[]
   beerPosts                   BeerPost[]
+  user_profiles               user_profiles[]
 
   @@index([instance_id])
   @@index([is_anonymous])
@@ -410,6 +411,21 @@ model refresh_tokens {
   @@index([session_id, revoked])
   @@index([updated_at(sort: Desc)])
   @@schema("auth")
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model user_profiles {
+  id           BigInt    @id @default(autoincrement())
+  user_id      String    @db.Uuid
+  username     String    @unique
+  display_name String?
+  bio          String?
+  avatar_url   String?
+  created_at   DateTime? @default(now()) @db.Timestamptz(6)
+  updated_at   DateTime? @default(now()) @db.Timestamptz(6)
+  users        User      @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@schema("public")
 }
 
 enum aal_level {
