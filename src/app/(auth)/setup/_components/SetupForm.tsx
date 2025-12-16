@@ -3,20 +3,22 @@
 import { supabase } from "@/lib/supabase/supabaseClient";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { createProfile } from "./actions/createProfile";
 
 export function SetupForm() {
   const router = useRouter();
   const [username, setUsername] = useState("");
   const [displayName, setDisplayName] = useState("");
   const [bio, setBio] = useState("");
-  const [error, setError] = useState<string | null>(null);
+  const [errors, setErrors] = useState<string[]>([]);
   const [message, setMessage] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    const formData = new FormData(e.currentTarget);
     setIsLoading(true);
-    setError(null);
+    setErrors([]);
     setMessage(null);
 
     const { data: userResult, error: userError } =
@@ -25,28 +27,28 @@ export function SetupForm() {
 
     if (userError || !user) {
       setIsLoading(false);
-      setError(
-        "ログイン状態を確認できませんでした。ログインし直してください。"
-      );
+      setErrors([
+        "ログイン状態を確認できませんでした。ログインし直してください。",
+      ]);
       return;
     }
 
-    const { error: profileError } = await supabase
-      .from("user_profiles")
-      .upsert({
-        user_id: user.id,
-        username,
-        display_name: displayName || null,
-        bio: bio || null,
-      });
+    formData.append("userId", user.id);
+
+    const result = await createProfile(formData);
 
     setIsLoading(false);
 
-    if (profileError) {
-      setError(profileError.message);
+    if (!result.success) {
+      const messages = result.errors?.map((err) => err.message) ?? [
+        result.message ?? "プロフィールの保存に失敗しました。",
+      ];
+
+      setErrors(messages);
       return;
     }
 
+    setErrors([]);
     setMessage("プロフィールを登録しました。");
     router.push("/");
   };
@@ -93,7 +95,7 @@ export function SetupForm() {
             value={displayName}
             onChange={(e) => setDisplayName(e.target.value)}
             autoComplete="name"
-            placeholder="ビール好きヒロキ"
+            placeholder="ビール大好き太郎"
             className="w-full rounded-xl border border-gray-200 px-4 py-3 text-base focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent"
           />
         </div>
@@ -122,10 +124,12 @@ export function SetupForm() {
         </button>
       </form>
 
-      {error && (
-        <p className="text-sm text-red-600 bg-red-50 border border-red-100 rounded-lg px-3 py-2">
-          {error}
-        </p>
+      {errors.length > 0 && (
+        <div className="text-sm text-red-600 bg-red-50 border border-red-100 rounded-lg px-3 py-2 space-y-0.5">
+          {errors.map((error, index) => (
+            <p key={index}>{error}</p>
+          ))}
+        </div>
       )}
       {message && (
         <p className="text-sm text-green-700 bg-green-50 border border-green-100 rounded-lg px-3 py-2">
