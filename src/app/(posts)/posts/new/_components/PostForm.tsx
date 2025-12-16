@@ -3,7 +3,7 @@
 import { BeerStyles } from "@/components/fetchBeerStyles";
 import { supabase } from "@/lib/supabase/supabaseClient";
 import { useState } from "react";
-import { createPost } from "./_action/createPost";
+import { createPost } from "./actions/createPost";
 
 interface Props {
   beerStyles: BeerStyles;
