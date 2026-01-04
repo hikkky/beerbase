@@ -1,3 +1,4 @@
+import { BottomNavigation } from "@/components/BottomNavigation";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 import { Sidebar } from "@/components/Sidebar";
@@ -103,6 +104,7 @@ export default async function UserPage({ params }: PageProps) {
         </main>
       </div>
       <Footer />
+      <BottomNavigation />
     </div>
   );
 }

@@ -1,8 +1,9 @@
+import { BottomNavigation } from "@/components/BottomNavigation";
+import { fetchBeerStyles } from "@/components/fetchBeerStyles";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 import { Sidebar } from "@/components/Sidebar";
 import { PostForm } from "./_components/PostForm";
-import { fetchBeerStyles } from "@/components/fetchBeerStyles";
 
 export default async function PostPage() {
   const beerStyles = await fetchBeerStyles();
@@ -29,6 +30,7 @@ export default async function PostPage() {
         </main>
       </div>
       <Footer />
+      <BottomNavigation />
     </div>
   );
 }

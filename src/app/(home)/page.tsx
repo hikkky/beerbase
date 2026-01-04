@@ -1,6 +1,7 @@
+import { BottomNavigation } from "@/components/BottomNavigation";
+import { Footer } from "../../components/Footer";
 import { Header } from "../../components/Header";
 import { Sidebar } from "../../components/Sidebar";
-import { Footer } from "../../components/Footer";
 import { PostList } from "./_components/PostList";
 import { fetchBeerPosts } from "./_data/fetchBeerPosts";
 
@@ -17,6 +18,7 @@ export default async function Home() {
         </main>
       </div>
       <Footer />
+      <BottomNavigation />
     </div>
   );
 }
