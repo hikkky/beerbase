@@ -1,17 +1,18 @@
 "use client";
 
 import { CogEightTooth, HomeIcon, UserIcon } from "@/components/icons";
+import { useMyPageHref } from "@/hooks/useMyPageHref";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-const navItems = [
-  { label: "Home", Icon: HomeIcon, href: "/" },
-  { label: "My Page", Icon: UserIcon, href: "#" },
-  { label: "Setting", Icon: CogEightTooth, href: "#" },
-];
-
 export function Sidebar() {
   const pathname = usePathname();
+  const myPageHref = useMyPageHref();
+  const navItems = [
+    { label: "Home", Icon: HomeIcon, href: "/" },
+    { label: "My Page", Icon: UserIcon, href: myPageHref },
+    { label: "Setting", Icon: CogEightTooth, href: "#" },
+  ];
 
   return (
     <aside className="hidden md:flex w-64 shrink-0 h-[calc(100vh-4rem)] border-r border-gray-200 p-4 sticky top-16 bg-white  flex-col overflow-y-auto">
