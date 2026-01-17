@@ -1,6 +1,7 @@
-import Image from "next/image";
 import { getPostImageUrl } from "@/utils/getImageUrl";
+import Image from "next/image";
 import { BeerPost } from "../_data/fetchBeerPosts";
+import { RadarChart } from "./RadarChart";
 
 interface Props {
   post: BeerPost;
@@ -8,31 +9,55 @@ interface Props {
 
 export function PostItem({ post }: Props) {
   const imageUrl = getPostImageUrl(post.images[0]?.imageUrl || null);
+  const toNumber = (value: number | { toNumber: () => number } | null) => {
+    if (value == null) return 0;
+    if (typeof value === "number") return value;
+    return value.toNumber();
+  };
+
+  const scores = {
+    bodyScore: toNumber(post.bodyScore),
+    sournessScore: toNumber(post.sournessScore),
+    sweetnessScore: toNumber(post.sweetnessScore),
+    aromaScore: toNumber(post.aromaScore),
+    bitternessScore: toNumber(post.bitternessScore),
+  };
 
   return (
-    <article className="border border-gray-200 rounded-xl p-6 shadow-sm bg-white hover:shadow-md transition-shadow">
-      <header className="mb-5 flex items-center gap-4">
-        <span className="w-12 h-12 rounded-full bg-gray-200 flex-shrink-0" />
-        <div className="flex flex-col text-sm text-gray-500">
-          <p className="font-medium text-gray-700">{post.user.id}</p>
-          <p>{post.createdAt.toLocaleDateString()}</p>
+    <article className="border border-gray-200 rounded-xl md:p-6 p-4 shadow-sm bg-white hover:shadow-md transition-shadow">
+      <div className="flex flex-col gap-2">
+        <div className="flex gap-2">
+          <div className="flex flex-col gap-2">
+            <h2 className="text-xl font-semibold text-gray-900">
+              {post.beerName}
+            </h2>
+            <p>{post.countryCode}</p>
+            <p>{post.breweryName}</p>
+            <p>{post.style?.name}</p>
+            <p>{post.abv?.toString()}%</p>
+            <p>{post.ibu}</p>
+          </div>
+          <div>
+            {imageUrl && (
+              <Image
+                src={imageUrl}
+                alt={post.beerName}
+                width={1200}
+                height={675}
+                className="h-56 object-contain"
+              />
+            )}
+          </div>
         </div>
-      </header>
-      <div className="mb-5 space-y-3">
-        <h2 className="text-xl font-semibold text-gray-900">{post.beerName}</h2>
-        <p className="text-gray-700 leading-relaxed">{post.comment}</p>
+        <div>
+          <div className="flex items-center gap-6">
+            <div className="w-40 h-40">
+              <RadarChart className="w-full h-full" scores={scores} />
+            </div>
+          </div>
+          <p className="text-gray-700 leading-relaxed">{post.comment}</p>
+        </div>
       </div>
-      {imageUrl && (
-        <div className="rounded-lg overflow-hidden">
-          <Image
-            src={imageUrl}
-            alt={post.beerName}
-            width={1200}
-            height={675}
-            className="w-full h-56 object-contain"
-          />
-        </div>
-      )}
     </article>
   );
 }
