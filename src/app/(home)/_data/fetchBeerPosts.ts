@@ -25,6 +25,13 @@ export async function fetchBeerPosts() {
       user: {
         select: {
           id: true,
+          user_profiles: {
+            select: {
+              username: true,
+              display_name: true,
+              avatar_url: true,
+            },
+          },
         },
       },
       images: {

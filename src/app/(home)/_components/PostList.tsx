@@ -1,5 +1,5 @@
-import { PostItem } from "./PostItem";
 import { BeerPost } from "../_data/fetchBeerPosts";
+import { PostItem } from "./PostItem";
 
 interface Props {
   beerPosts: BeerPost[];
@@ -7,7 +7,7 @@ interface Props {
 
 export function PostList({ beerPosts }: Props) {
   return (
-    <div className="max-w-3xl space-y-6">
+    <div className="w-full md:max-w-3xl md:space-y-6 space-y-4">
       {beerPosts.map((beerPost) => (
         <PostItem key={beerPost.id.toString()} post={beerPost} />
       ))}

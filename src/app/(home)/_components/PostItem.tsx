@@ -1,6 +1,7 @@
-import Image from "next/image";
 import { getPostImageUrl } from "@/utils/getImageUrl";
+import Image from "next/image";
 import { BeerPost } from "../_data/fetchBeerPosts";
+import { RadarChart } from "./RadarChart";
 
 interface Props {
   post: BeerPost;
@@ -8,31 +9,116 @@ interface Props {
 
 export function PostItem({ post }: Props) {
   const imageUrl = getPostImageUrl(post.images[0]?.imageUrl || null);
+  const toNumber = (value: number | { toNumber: () => number } | null) => {
+    if (value == null) return 0;
+    if (typeof value === "number") return value;
+    return value.toNumber();
+  };
+
+  const scores = {
+    bodyScore: toNumber(post.bodyScore),
+    sournessScore: toNumber(post.sournessScore),
+    sweetnessScore: toNumber(post.sweetnessScore),
+    aromaScore: toNumber(post.aromaScore),
+    bitternessScore: toNumber(post.bitternessScore),
+  };
 
   return (
-    <article className="border border-gray-200 rounded-xl p-6 shadow-sm bg-white hover:shadow-md transition-shadow">
-      <header className="mb-5 flex items-center gap-4">
-        <span className="w-12 h-12 rounded-full bg-gray-200 flex-shrink-0" />
-        <div className="flex flex-col text-sm text-gray-500">
-          <p className="font-medium text-gray-700">{post.user.id}</p>
-          <p>{post.createdAt.toLocaleDateString()}</p>
+    <article className="border border-gray-200 rounded-xl md:p-6 p-4 shadow-sm bg-white hover:shadow-md transition-shadow">
+      <div className="w-full flex flex-col gap-2">
+        <div className="flex justify-between">
+          <div className="flex">
+            {/* TODO: avatarImage を表示 */}
+            <p className="text-sm">
+              {post.user.user_profiles[0]?.display_name}
+            </p>
+            <p className="text-sm text-gray-500">
+              @{post.user.user_profiles[0]?.username}
+            </p>
+          </div>
+          <div>
+            <p className="text-sm text-gray-500">
+              {post.createdAt.toLocaleDateString("ja-JP", {
+                year: "numeric",
+                month: "2-digit",
+                day: "2-digit",
+              })}
+            </p>
+          </div>
         </div>
-      </header>
-      <div className="mb-5 space-y-3">
-        <h2 className="text-xl font-semibold text-gray-900">{post.beerName}</h2>
-        <p className="text-gray-700 leading-relaxed">{post.comment}</p>
+
+        <h2 className="px-1 text-xl font-semibold text-gray-900 border-b border-gray-300 pb-0.5">
+          {post.beerName}
+        </h2>
+        <div className="w-full items-center flex gap-2">
+          <div className="flex w-1/2 flex-col gap-2">
+            <div className="flex flex-col gap-1">
+              <div className="flex w-full gap-2">
+                <dt className="w-16 shrink-0 bg-black px-1 py-0.5 text-xs font-semibold text-white">
+                  Country
+                </dt>
+                <dd className="flex-1 text-sm text-gray-900">
+                  {post.countryCode}
+                </dd>
+              </div>
+              <div className="flex w-full gap-2">
+                <dt className="w-16 shrink-0 bg-black px-1 py-0.5 text-xs font-semibold text-white">
+                  Brewery
+                </dt>
+                <dd className="flex-1 text-sm text-gray-900">
+                  {post.breweryName}
+                </dd>
+              </div>
+              <div className="flex w-full gap-2">
+                <dt className="w-16 shrink-0 bg-black px-1 py-0.5 text-xs font-semibold text-white">
+                  Style
+                </dt>
+                <dd className="flex-1 text-sm text-gray-900">
+                  {post.style?.name}
+                </dd>
+              </div>
+              <div className="flex w-full gap-2">
+                <dt className="w-16 shrink-0 bg-black px-1 py-0.5 text-xs font-semibold text-white">
+                  ABV
+                </dt>
+                <dd className="flex-1 text-sm text-gray-900">
+                  {post.abv?.toString()}%
+                </dd>
+              </div>
+              <div className="flex w-full gap-2">
+                <dt className="w-16 shrink-0 bg-black px-1 py-0.5 text-xs font-semibold text-white">
+                  IBU
+                </dt>
+                <dd className="flex-1 text-sm text-gray-900">{post.ibu}</dd>
+              </div>
+            </div>
+          </div>
+          <div className="w-1/2">
+            {imageUrl && (
+              <div className="relative w-full aspect-[4/3]">
+                <Image
+                  src={imageUrl}
+                  alt={post.beerName}
+                  fill
+                  className="rounded-lg object-cover"
+                  sizes="(min-width: 768px) 33vw, 100vw"
+                />
+              </div>
+            )}
+          </div>
+        </div>
+
+        <div>
+          <div className="flex items-center gap-2">
+            <div className="w-32 h-32">
+              <RadarChart className="w-full h-full" scores={scores} />
+            </div>
+            <div className="flex-1 p-2 text-xs h-24 border border-dashed border-gray-300">
+              {post.comment}
+            </div>
+          </div>
+        </div>
       </div>
-      {imageUrl && (
-        <div className="rounded-lg overflow-hidden">
-          <Image
-            src={imageUrl}
-            alt={post.beerName}
-            width={1200}
-            height={675}
-            className="w-full h-56 object-contain"
-          />
-        </div>
-      )}
     </article>
   );
 }
