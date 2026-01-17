@@ -3,6 +3,7 @@ import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 import { Sidebar } from "@/components/Sidebar";
 import { notFound } from "next/navigation";
+import { PostedBeers } from "./_components/PostedBeers";
 import { ProfileArea } from "./_components/ProfileArea";
 import { fetchProfile } from "./_data/fetchProfile";
 
@@ -26,6 +27,7 @@ export default async function UserPage({ params }: PageProps) {
         <Sidebar />
         <main className="flex-1 md:p-8 p-2">
           <ProfileArea profile={profile} />
+          <PostedBeers />
         </main>
       </div>
       <Footer />
