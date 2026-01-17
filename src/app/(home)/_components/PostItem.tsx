@@ -1,4 +1,4 @@
-import { getPostImageUrl } from "@/utils/getImageUrl";
+import { getImageUrl } from "@/utils/getImageUrl";
 import Image from "next/image";
 import { BeerPost } from "../_data/fetchBeerPosts";
 import { RadarChart } from "./RadarChart";
@@ -8,7 +8,7 @@ interface Props {
 }
 
 export function PostItem({ post }: Props) {
-  const imageUrl = getPostImageUrl(post.images[0]?.imageUrl || null);
+  const imageUrl = getImageUrl(post.images[0]?.imageUrl || null);
   const toNumber = (value: number | { toNumber: () => number } | null) => {
     if (value == null) return 0;
     if (typeof value === "number") return value;

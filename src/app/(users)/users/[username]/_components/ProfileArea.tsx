@@ -1,4 +1,4 @@
-import { getPostImageUrl } from "@/utils/getImageUrl";
+import { getImageUrl } from "@/utils/getImageUrl";
 import Image from "next/image";
 import { Profile } from "../_data/fetchProfile";
 
@@ -7,9 +7,7 @@ interface Props {
 }
 
 export function ProfileArea({ profile }: Props) {
-  const avatarUrl = profile.avatar_url
-    ? getPostImageUrl(profile.avatar_url)
-    : null;
+  const avatarUrl = profile.avatar_url ? getImageUrl(profile.avatar_url) : null;
   const fallbackInitial = (profile.display_name ?? profile.username)
     .slice(0, 2)
     .toUpperCase();

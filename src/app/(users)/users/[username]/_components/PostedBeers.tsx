@@ -1,4 +1,4 @@
-import { getPostImageUrl } from "@/utils/getImageUrl";
+import { getImageUrl } from "@/utils/getImageUrl";
 import Image from "next/image";
 import { BeerPost } from "../_data/fetchUserBeerPosts";
 
@@ -10,7 +10,7 @@ export function PostedBeers({ beerPosts }: Props) {
   return (
     <section className="grid grid-cols-3">
       {beerPosts.map((beerPost) => {
-        const imageUrl = getPostImageUrl(beerPost.images[0]?.imageUrl || null); // TODO: 画像がない場合の処理
+        const imageUrl = getImageUrl(beerPost.images[0]?.imageUrl || null); // TODO: 画像がない場合の処理
         if (!imageUrl) return null;
 
         return (
