@@ -35,6 +35,15 @@ export function PostForm({ beerStyles }: Props) {
     setSuccessMessage(null);
 
     const formData = new FormData(e.currentTarget);
+    const { data, error: userError } = await supabase.auth.getUser();
+    const user = data.user;
+    if (userError || !user) {
+      setIsPending(false);
+      setErrorMessages(["ログインしてください。"]);
+      return;
+    }
+    formData.set("userId", user.id);
+
     const imageFile = formData.get("image") as File | null;
 
     if (imageFile && imageFile.size > 0) {

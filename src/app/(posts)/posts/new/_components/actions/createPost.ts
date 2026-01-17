@@ -6,6 +6,7 @@ import { postSchema } from "./postSchema";
 export async function createPost(formData: FormData) {
   const parsed = postSchema.safeParse({
     beerName: formData.get("beerName"),
+    userId: formData.get("userId"),
     breweryName: formData.get("breweryName"),
     beerStyle: formData.get("beerStyle"),
     countryCode: formData.get("countryCode"),
@@ -30,12 +31,6 @@ export async function createPost(formData: FormData) {
     };
   }
 
-  // 仮のユーザー（先頭のユーザー）に紐づける。実運用では認証ユーザーのIDを使う。
-  const user = await prisma.user.findFirst();
-  if (!user) {
-    throw new Error("ユーザーが存在しません。先にユーザーを作成してください。");
-  }
-
   try {
     await prisma.$transaction(async (tx) => {
       const post = await prisma.beerPost.create({
@@ -46,7 +41,7 @@ export async function createPost(formData: FormData) {
           ibu: parsed.data.ibu,
           comment: parsed.data.comment,
           styleId: parsed.data.beerStyle ? BigInt(parsed.data.beerStyle) : null,
-          userId: user.id,
+          userId: parsed.data.userId,
           bodyScore: parsed.data.bodyScore,
           sournessScore: parsed.data.sournessScore,
           sweetnessScore: parsed.data.sweetnessScore,
