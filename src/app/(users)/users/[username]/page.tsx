@@ -6,6 +6,7 @@ import { notFound } from "next/navigation";
 import { PostedBeers } from "./_components/PostedBeers";
 import { ProfileArea } from "./_components/ProfileArea";
 import { fetchProfile } from "./_data/fetchProfile";
+import { fetchUserBeerPosts } from "./_data/fetchUserBeerPosts";
 
 type PageProps = {
   params: {
@@ -20,6 +21,8 @@ export default async function UserPage({ params }: PageProps) {
     notFound();
   }
 
+  const beerPosts = await fetchUserBeerPosts(profile.user_id);
+
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
@@ -27,7 +30,7 @@ export default async function UserPage({ params }: PageProps) {
         <Sidebar />
         <main className="flex-1 md:p-8 p-2">
           <ProfileArea profile={profile} />
-          <PostedBeers />
+          <PostedBeers beerPosts={beerPosts} />
         </main>
       </div>
       <Footer />
