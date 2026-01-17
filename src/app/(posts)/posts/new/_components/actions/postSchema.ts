@@ -25,6 +25,7 @@ const nullableString = z
 
 export const postSchema = z.object({
   beerName: z.string().trim().min(1, "ビール名は必須です。"),
+  userId: z.string().uuid("ユーザーIDが不正です。"),
   beerStyle: nullableString,
   breweryName: nullableString,
   countryCode: nullableString,
