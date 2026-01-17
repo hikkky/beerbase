@@ -29,6 +29,7 @@ export async function fetchBeerPosts() {
             select: {
               username: true,
               display_name: true,
+              avatar_url: true,
             },
           },
         },
