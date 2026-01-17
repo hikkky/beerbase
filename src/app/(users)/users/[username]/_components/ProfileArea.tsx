@@ -28,6 +28,7 @@ export function ProfileArea({ profile }: Props) {
             <span>{fallbackInitial}</span>
           )}
         </div>
+        <button>Edit Profile</button>
         <div className="flex flex-col gap-2 flex-1">
           <div className="flex flex-wrap items-center gap-1">
             <h1 className="text-xl font-bold text-gray-900">
