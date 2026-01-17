@@ -82,16 +82,6 @@ export function PostForm({ beerStyles }: Props) {
         onSubmit={handleSubmit}
         className="lg:col-span-2 bg-white border border-gray-200 rounded-2xl p-6 shadow-sm space-y-6"
       >
-        <header className="space-y-1">
-          <p className="text-sm font-medium text-amber-700">New Post</p>
-          <h2 className="text-2xl font-semibold text-gray-900">
-            今日のビール体験をシェア
-          </h2>
-          <p className="text-sm text-gray-500">
-            どんな場所で、どんな味わいだったかを記録してみましょう。
-          </p>
-        </header>
-
         <div className="space-y-1.5">
           <label
             htmlFor="beerName"
