@@ -77,11 +77,8 @@ export function PostForm({ beerStyles }: Props) {
   };
 
   return (
-    <section className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-      <form
-        onSubmit={handleSubmit}
-        className="lg:col-span-2 bg-white border border-gray-200 rounded-2xl p-6 shadow-sm space-y-6"
-      >
+    <section className="gap-4">
+      <form onSubmit={handleSubmit} className="flex flex-col p-2 gap-4">
         <div className="space-y-1.5">
           <label
             htmlFor="beerName"
