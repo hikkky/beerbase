@@ -1,6 +1,6 @@
 import { prisma } from "@/lib/prisma";
 
-export type Profile = Awaited<ReturnType<typeof fetchProfile>>;
+export type Profile = NonNullable<Awaited<ReturnType<typeof fetchProfile>>>;
 
 export async function fetchProfile(username: string) {
   return prisma.user_profiles.findUnique({
