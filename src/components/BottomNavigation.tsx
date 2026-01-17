@@ -1,17 +1,18 @@
 "use client";
 
 import { CogEightTooth, HomeIcon, UserIcon } from "@/components/icons";
+import { useMyPageHref } from "@/hooks/useMyPageHref";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-const navItems = [
-  { label: "Home", Icon: HomeIcon, href: "/" },
-  { label: "My Page", Icon: UserIcon, href: "#" },
-  { label: "Setting", Icon: CogEightTooth, href: "#" },
-];
-
 export function BottomNavigation() {
   const pathname = usePathname();
+  const myPageHref = useMyPageHref();
+  const navItems = [
+    { label: "Home", Icon: HomeIcon, href: "/" },
+    { label: "My Page", Icon: UserIcon, href: myPageHref },
+    { label: "Setting", Icon: CogEightTooth, href: "#" },
+  ];
 
   return (
     <aside className="fixed bottom-0 left-0 right-0 border-t border-gray-200 bg-white md:hidden z-50">
