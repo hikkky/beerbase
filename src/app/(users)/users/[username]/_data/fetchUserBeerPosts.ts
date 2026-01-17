@@ -8,27 +8,11 @@ export async function fetchUserBeerPosts(userId: string) {
     select: {
       id: true,
       beerName: true,
-      breweryName: true,
-      abv: true,
-      ibu: true,
-      comment: true,
-      countryCode: true,
-      bodyScore: true,
-      sournessScore: true,
-      sweetnessScore: true,
-      aromaScore: true,
-      bitternessScore: true,
       images: {
         select: {
           imageUrl: true,
         },
       },
-      style: {
-        select: {
-          name: true,
-        },
-      },
-      styleCustom: true,
     },
     where: {
       userId,
