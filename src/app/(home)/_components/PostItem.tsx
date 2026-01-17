@@ -28,9 +28,29 @@ export function PostItem({ post }: Props) {
       <div className="flex flex-col gap-2">
         <div className="flex gap-2">
           <div className="flex flex-col gap-2">
+            <div className="flex justify-between">
+              <div className="flex">
+                <p className="text-sm text-gray-500">
+                  {post.user.user_profiles[0]?.display_name}
+                </p>
+                <p className="text-sm text-gray-500">
+                  @{post.user.user_profiles[0]?.username}
+                </p>
+              </div>
+              <div>
+                <p className="text-sm text-gray-500">
+                  {post.createdAt.toLocaleDateString("ja-JP", {
+                    year: "numeric",
+                    month: "2-digit",
+                    day: "2-digit",
+                  })}
+                </p>
+              </div>
+            </div>
             <h2 className="text-xl font-semibold text-gray-900">
               {post.beerName}
             </h2>
+
             <p>{post.countryCode}</p>
             <p>{post.breweryName}</p>
             <p>{post.style?.name}</p>
