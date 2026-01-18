@@ -172,11 +172,15 @@ export function PostForm({ beerStyles }: Props) {
             className="text-sm font-semibold text-gray-700"
           >
             ビール名
+            <span className="ml-2 inline-flex items-center rounded-full bg-rose-50 px-2 py-0.5 text-[10px] font-semibold text-rose-600">
+              必須
+            </span>
           </label>
           <input
             id="beerName"
             name="beerName"
             placeholder="よなよなエール"
+            required
             className="w-full rounded-xl border border-gray-200 px-4 py-3 text-base focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent"
           />
         </div>
@@ -273,6 +277,9 @@ export function PostForm({ beerStyles }: Props) {
         <div className="space-y-3">
           <p className="text-sm font-semibold text-gray-700">
             レーダーチャート項目
+            <span className="ml-2 inline-flex items-center rounded-full bg-rose-50 px-2 py-0.5 text-[10px] font-semibold text-rose-600">
+              必須
+            </span>
           </p>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
