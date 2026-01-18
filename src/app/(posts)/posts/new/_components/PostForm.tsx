@@ -171,9 +171,9 @@ export function PostForm({ beerStyles }: Props) {
             htmlFor="beerName"
             className="text-sm font-semibold text-gray-700"
           >
-            ビール名
+            Beer Name
             <span className="ml-2 inline-flex items-center rounded-full bg-rose-50 px-2 py-0.5 text-[10px] font-semibold text-rose-600">
-              必須
+              Required
             </span>
           </label>
           <input
@@ -191,7 +191,7 @@ export function PostForm({ beerStyles }: Props) {
               htmlFor="countryCode"
               className="text-sm font-semibold text-gray-700"
             >
-              生産地
+              Country
             </label>
             <select
               id="countryCode"
@@ -210,7 +210,7 @@ export function PostForm({ beerStyles }: Props) {
               htmlFor="breweryName"
               className="text-sm font-semibold text-gray-700"
             >
-              ブルワリー
+              Brewery
             </label>
             <input
               id="breweryName"
@@ -224,7 +224,7 @@ export function PostForm({ beerStyles }: Props) {
               htmlFor="beerStyle"
               className="text-sm font-semibold text-gray-700"
             >
-              スタイル
+              Style
             </label>
             <select
               id="beerStyle"
@@ -276,9 +276,9 @@ export function PostForm({ beerStyles }: Props) {
 
         <div className="space-y-3">
           <p className="text-sm font-semibold text-gray-700">
-            レーダーチャート項目
+            Scores
             <span className="ml-2 inline-flex items-center rounded-full bg-rose-50 px-2 py-0.5 text-[10px] font-semibold text-rose-600">
-              必須
+              Required
             </span>
           </p>
 
@@ -321,7 +321,7 @@ export function PostForm({ beerStyles }: Props) {
             htmlFor="comment"
             className="text-sm font-semibold text-gray-700"
           >
-            メモ・感想
+            Comment
           </label>
           <textarea
             id="comment"
