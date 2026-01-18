@@ -338,7 +338,7 @@ export function PostForm({ beerStyles }: Props) {
             disabled={isPending}
             className="px-6 py-3 rounded-full bg-black text-white font-semibold hover:opacity-80 transition"
           >
-            {isPending ? "送信中..." : "投稿する"}
+            {isPending ? "Sending..." : "Post"}
           </button>
         </div>
         {errorMessages.length > 0 && (
