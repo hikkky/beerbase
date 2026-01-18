@@ -332,11 +332,11 @@ export function PostForm({ beerStyles }: Props) {
           />
         </div>
 
-        <div className="flex items-center gap-4">
+        <div className="flex items-center justify-center gap-4">
           <button
             type="submit"
             disabled={isPending}
-            className="px-6 py-3 rounded-full bg-black text-white font-semibold hover:opacity-80 transition"
+            className="w-1/2 py-3 rounded-full bg-black text-white font-semibold hover:opacity-80 transition"
           >
             {isPending ? "Sending..." : "Post"}
           </button>
