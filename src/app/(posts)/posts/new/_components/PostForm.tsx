@@ -1,8 +1,9 @@
 "use client";
 
 import { BeerStyles } from "@/components/fetchBeerStyles";
+import { PhotoIcon } from "@/components/icons";
 import { supabase } from "@/lib/supabase/supabaseClient";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { createPost } from "./actions/createPost";
 
 interface Props {
@@ -13,6 +14,8 @@ export function PostForm({ beerStyles }: Props) {
   const [isPending, setIsPending] = useState<boolean>(false);
   const [errorMessages, setErrorMessages] = useState<string[]>([]);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const imageInputRef = useRef<HTMLInputElement | null>(null);
 
   const countryCodes = [
     { code: "JP", name: "Japan" },
@@ -76,9 +79,71 @@ export function PostForm({ beerStyles }: Props) {
     setSuccessMessage("投稿しました");
   };
 
+  useEffect(() => {
+    return () => {
+      if (previewUrl) {
+        URL.revokeObjectURL(previewUrl);
+      }
+    };
+  }, [previewUrl]);
+
   return (
     <section className="gap-4">
       <form onSubmit={handleSubmit} className="flex flex-col p-2 gap-4">
+        <label
+          htmlFor="image"
+          className={
+            previewUrl
+              ? "group relative cursor-pointer overflow-hidden rounded-xl border border-gray-200"
+              : "group flex cursor-pointer items-center justify-center rounded-xl border border-dashed border-gray-200 px-6 py-10 transition-colors hover:border-amber-400 hover:bg-amber-50/40"
+          }
+        >
+          <input
+            id="image"
+            name="image"
+            type="file"
+            accept="image/*"
+            className="sr-only"
+            ref={imageInputRef}
+            onChange={(e) => {
+              const file = e.currentTarget.files?.[0];
+              if (previewUrl) {
+                URL.revokeObjectURL(previewUrl);
+              }
+              setPreviewUrl(file ? URL.createObjectURL(file) : null);
+            }}
+          />
+          {previewUrl ? (
+            <>
+              <img
+                src={previewUrl}
+                alt="選択した画像のプレビュー"
+                className="h-48 w-full object-cover"
+              />
+              <button
+                type="button"
+                aria-label="選択した画像を削除"
+                className="absolute right-2 top-2 inline-flex h-8 w-8 items-center justify-center rounded-full bg-white/90 text-gray-600 shadow-sm transition-colors hover:bg-white hover:text-gray-800"
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  if (previewUrl) {
+                    URL.revokeObjectURL(previewUrl);
+                  }
+                  setPreviewUrl(null);
+                  if (imageInputRef.current) {
+                    imageInputRef.current.value = "";
+                  }
+                }}
+              >
+                ×
+              </button>
+            </>
+          ) : (
+            <PhotoIcon className="h-12 w-12 text-gray-400 transition-colors group-hover:text-amber-500" />
+          )}
+        </label>
+
         <div className="space-y-1.5">
           <label
             htmlFor="beerName"
@@ -296,21 +361,6 @@ export function PostForm({ beerStyles }: Props) {
               placeholder="最高"
               rows={3}
               className="w-full rounded-xl border border-gray-200 px-4 py-3 text-base focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent"
-            />
-          </div>
-          <div className="space-y-1.5">
-            <label
-              htmlFor="image"
-              className="text-sm font-semibold text-gray-700"
-            >
-              画像
-            </label>
-            <input
-              id="image"
-              name="image"
-              type="file"
-              accept="image/*"
-              className="w-full rounded-xl border border-gray-200 px-4 py-3 text-base focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent file:mr-4 file:rounded-lg file:border-none file:bg-amber-50 file:px-3 file:py-2 file:text-amber-700"
             />
           </div>
         </div>
