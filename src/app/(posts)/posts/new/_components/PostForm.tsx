@@ -5,6 +5,7 @@ import { PhotoIcon } from "@/components/icons";
 import { supabase } from "@/lib/supabase/supabaseClient";
 import { useEffect, useRef, useState } from "react";
 import { createPost } from "./actions/createPost";
+import { PreviewImage } from "./PreviewImage";
 
 interface Props {
   beerStyles: BeerStyles;
@@ -30,6 +31,35 @@ export function PostForm({ beerStyles }: Props) {
     { code: "CA", name: "Canada" },
     // 他の国コードも必要に応じて追加
   ];
+
+  const handleChangeImage = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.currentTarget.files?.[0];
+
+    if (previewUrl) {
+      URL.revokeObjectURL(previewUrl);
+    }
+
+    setPreviewUrl(file ? URL.createObjectURL(file) : null);
+  };
+
+  const handleRemoveImage = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    if (previewUrl) {
+      URL.revokeObjectURL(previewUrl);
+    }
+
+    setPreviewUrl(null);
+
+    if (imageInputRef.current) {
+      imageInputRef.current.value = "";
+    }
+  };
+
+  const labelClassName = previewUrl
+    ? "group relative cursor-pointer overflow-hidden rounded-xl border border-gray-200"
+    : "group flex cursor-pointer items-center justify-center rounded-xl border border-dashed border-gray-200 px-6 py-10 transition-colors hover:border-amber-400 hover:bg-amber-50/40";
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -90,14 +120,7 @@ export function PostForm({ beerStyles }: Props) {
   return (
     <section className="gap-4">
       <form onSubmit={handleSubmit} className="flex flex-col p-2 gap-4">
-        <label
-          htmlFor="image"
-          className={
-            previewUrl
-              ? "group relative cursor-pointer overflow-hidden rounded-xl border border-gray-200"
-              : "group flex cursor-pointer items-center justify-center rounded-xl border border-dashed border-gray-200 px-6 py-10 transition-colors hover:border-amber-400 hover:bg-amber-50/40"
-          }
-        >
+        <label htmlFor="image" className={labelClassName}>
           <input
             id="image"
             name="image"
@@ -105,40 +128,14 @@ export function PostForm({ beerStyles }: Props) {
             accept="image/*"
             className="sr-only"
             ref={imageInputRef}
-            onChange={(e) => {
-              const file = e.currentTarget.files?.[0];
-              if (previewUrl) {
-                URL.revokeObjectURL(previewUrl);
-              }
-              setPreviewUrl(file ? URL.createObjectURL(file) : null);
-            }}
+            onChange={handleChangeImage}
           />
+
           {previewUrl ? (
-            <>
-              <img
-                src={previewUrl}
-                alt="選択した画像のプレビュー"
-                className="h-48 w-full object-cover"
-              />
-              <button
-                type="button"
-                aria-label="選択した画像を削除"
-                className="absolute right-2 top-2 inline-flex h-8 w-8 items-center justify-center rounded-full bg-white/90 text-gray-600 shadow-sm transition-colors hover:bg-white hover:text-gray-800"
-                onClick={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
-                  if (previewUrl) {
-                    URL.revokeObjectURL(previewUrl);
-                  }
-                  setPreviewUrl(null);
-                  if (imageInputRef.current) {
-                    imageInputRef.current.value = "";
-                  }
-                }}
-              >
-                ×
-              </button>
-            </>
+            <PreviewImage
+              previewUrl={previewUrl}
+              onRemove={handleRemoveImage}
+            />
           ) : (
             <PhotoIcon className="h-12 w-12 text-gray-400 transition-colors group-hover:text-amber-500" />
           )}
