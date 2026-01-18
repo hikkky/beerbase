@@ -6,16 +6,34 @@ import { supabase } from "@/lib/supabase/supabaseClient";
 import { useEffect, useRef, useState } from "react";
 import { createPost } from "./actions/createPost";
 import { PreviewImage } from "./PreviewImage";
+import { ScoreSlider } from "./ScoresSlider";
 
 interface Props {
   beerStyles: BeerStyles;
 }
+
+export type ScoreKey =
+  | "bodyScore"
+  | "sournessScore"
+  | "sweetnessScore"
+  | "aromaScore"
+  | "bitternessScore";
+
+type Scores = Record<ScoreKey, string>;
 
 export function PostForm({ beerStyles }: Props) {
   const [isPending, setIsPending] = useState<boolean>(false);
   const [errorMessages, setErrorMessages] = useState<string[]>([]);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [scores, setScores] = useState<Scores>({
+    bodyScore: "3.0",
+    sournessScore: "3.0",
+    sweetnessScore: "3.0",
+    aromaScore: "3.0",
+    bitternessScore: "3.0",
+  });
+
   const imageInputRef = useRef<HTMLInputElement | null>(null);
 
   const countryCodes = [
@@ -60,6 +78,13 @@ export function PostForm({ beerStyles }: Props) {
   const labelClassName = previewUrl
     ? "group relative cursor-pointer overflow-hidden rounded-xl border border-gray-200"
     : "group flex cursor-pointer items-center justify-center rounded-xl border border-dashed border-gray-200 px-6 py-10 transition-colors hover:border-amber-400 hover:bg-amber-50/40";
+
+  const handleScoreChange = (key: ScoreKey, value: string) => {
+    setScores((prev) => ({
+      ...prev,
+      [key]: value,
+    }));
+  };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -244,122 +269,60 @@ export function PostForm({ beerStyles }: Props) {
             />
           </div>
         </div>
+
         <div className="space-y-3">
           <p className="text-sm font-semibold text-gray-700">
             レーダーチャート項目
           </p>
+
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div className="space-y-1.5">
-              <label
-                htmlFor="bodyScore"
-                className="text-sm font-semibold text-gray-700"
-              >
-                ボディ
-              </label>
-              <input
-                id="bodyScore"
-                name="bodyScore"
-                type="number"
-                step="0.1"
-                min="0"
-                max="5"
-                placeholder="3.0"
-                required
-                className="w-full rounded-xl border border-gray-200 px-4 py-3 text-base focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent"
-              />
-            </div>
-            <div className="space-y-1.5">
-              <label
-                htmlFor="sournessScore"
-                className="text-sm font-semibold text-gray-700"
-              >
-                酸味
-              </label>
-              <input
-                id="sournessScore"
-                name="sournessScore"
-                type="number"
-                step="0.1"
-                min="0"
-                max="5"
-                placeholder="3.0"
-                required
-                className="w-full rounded-xl border border-gray-200 px-4 py-3 text-base focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent"
-              />
-            </div>
-            <div className="space-y-1.5">
-              <label
-                htmlFor="sweetnessScore"
-                className="text-sm font-semibold text-gray-700"
-              >
-                甘味
-              </label>
-              <input
-                id="sweetnessScore"
-                name="sweetnessScore"
-                type="number"
-                step="0.1"
-                min="0"
-                max="5"
-                placeholder="3.0"
-                required
-                className="w-full rounded-xl border border-gray-200 px-4 py-3 text-base focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent"
-              />
-            </div>
-            <div className="space-y-1.5">
-              <label
-                htmlFor="aromaScore"
-                className="text-sm font-semibold text-gray-700"
-              >
-                香り
-              </label>
-              <input
-                id="aromaScore"
-                name="aromaScore"
-                type="number"
-                step="0.1"
-                min="0"
-                max="5"
-                placeholder="3.0"
-                required
-                className="w-full rounded-xl border border-gray-200 px-4 py-3 text-base focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent"
-              />
-            </div>
-            <div className="space-y-1.5">
-              <label
-                htmlFor="bitternessScore"
-                className="text-sm font-semibold text-gray-700"
-              >
-                苦味
-              </label>
-              <input
-                id="bitternessScore"
-                name="bitternessScore"
-                type="number"
-                step="0.1"
-                min="0"
-                max="5"
-                placeholder="3.0"
-                required
-                className="w-full rounded-xl border border-gray-200 px-4 py-3 text-base focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent"
-              />
-            </div>
-          </div>
-          <div className="space-y-1.5">
-            <label
-              htmlFor="comment"
-              className="text-sm font-semibold text-gray-700"
-            >
-              メモ・感想
-            </label>
-            <textarea
-              id="comment"
-              name="comment"
-              placeholder="最高"
-              rows={3}
-              className="w-full rounded-xl border border-gray-200 px-4 py-3 text-base focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent"
+            <ScoreSlider
+              id="bodyScore"
+              label="ボディ"
+              value={scores.bodyScore}
+              onChange={handleScoreChange}
+            />
+            <ScoreSlider
+              id="sournessScore"
+              label="酸味"
+              value={scores.sournessScore}
+              onChange={handleScoreChange}
+            />
+            <ScoreSlider
+              id="sweetnessScore"
+              label="甘味"
+              value={scores.sweetnessScore}
+              onChange={handleScoreChange}
+            />
+            <ScoreSlider
+              id="aromaScore"
+              label="香り"
+              value={scores.aromaScore}
+              onChange={handleScoreChange}
+            />
+            <ScoreSlider
+              id="bitternessScore"
+              label="苦味"
+              value={scores.bitternessScore}
+              onChange={handleScoreChange}
             />
           </div>
+        </div>
+
+        <div className="space-y-1.5">
+          <label
+            htmlFor="comment"
+            className="text-sm font-semibold text-gray-700"
+          >
+            メモ・感想
+          </label>
+          <textarea
+            id="comment"
+            name="comment"
+            placeholder="最高"
+            rows={3}
+            className="w-full rounded-xl border border-gray-200 px-4 py-3 text-base focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent"
+          />
         </div>
 
         <div className="flex items-center gap-4">
