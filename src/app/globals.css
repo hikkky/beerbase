@@ -24,3 +24,47 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+.score-slider {
+  appearance: none;
+  -webkit-appearance: none;
+  height: 6px;
+  border-radius: 9999px;
+  background: linear-gradient(
+    to right,
+    #f59e0b 0%,
+    #f59e0b var(--range-progress),
+    #e5e7eb var(--range-progress),
+    #e5e7eb 100%
+  );
+}
+
+.score-slider::-webkit-slider-thumb {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 9999px;
+  background: #f59e0b;
+  border: 2px solid #ffffff;
+}
+
+.score-slider::-moz-range-track {
+  height: 6px;
+  border-radius: 9999px;
+  background: #e5e7eb;
+}
+
+.score-slider::-moz-range-progress {
+  height: 6px;
+  border-radius: 9999px;
+  background: #f59e0b;
+}
+
+.score-slider::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  border-radius: 9999px;
+  background: #f59e0b;
+  border: 2px solid #ffffff;
+}
