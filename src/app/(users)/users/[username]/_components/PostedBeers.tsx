@@ -1,5 +1,6 @@
 import { getImageUrl } from "@/utils/getImageUrl";
 import Image from "next/image";
+import Link from "next/link";
 import { BeerPost } from "../_data/fetchUserBeerPosts";
 
 type Props = {
@@ -14,7 +15,8 @@ export function PostedBeers({ beerPosts }: Props) {
         if (!imageUrl) return null;
 
         return (
-          <article
+          <Link
+            href={`/posts/${beerPost.id.toString()}`}
             key={beerPost.id.toString()}
             className="relative w-full overflow-hidden"
           >
@@ -27,7 +29,7 @@ export function PostedBeers({ beerPosts }: Props) {
                 sizes="(min-width: 768px) 33vw, 100vw"
               />
             </div>
-          </article>
+          </Link>
         );
       })}
     </section>
