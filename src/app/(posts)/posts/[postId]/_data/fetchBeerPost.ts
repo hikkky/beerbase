@@ -1,6 +1,6 @@
 import { prisma } from "@/lib/prisma";
 
-export type BeerPost = Awaited<ReturnType<typeof fetchBeerPost>>;
+export type BeerPost = NonNullable<Awaited<ReturnType<typeof fetchBeerPost>>>;
 
 export async function fetchBeerPost(postId: number) {
   return prisma.beerPost.findUnique({
