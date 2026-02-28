@@ -1,6 +1,7 @@
 "use server";
 
 import { prisma } from "@/lib/prisma";
+import { Prisma } from "@prisma/client";
 import { postSchema } from "./postSchema";
 
 export async function createPost(formData: FormData) {
@@ -32,8 +33,8 @@ export async function createPost(formData: FormData) {
   }
 
   try {
-    await prisma.$transaction(async (tx) => {
-      const post = await prisma.beerPost.create({
+    await prisma.$transaction(async (tx: Prisma.TransactionClient) => {
+      const post = await tx.beerPost.create({
         data: {
           beerName: parsed.data.beerName,
           breweryName: parsed.data.breweryName,
@@ -52,7 +53,7 @@ export async function createPost(formData: FormData) {
       });
 
       if (parsed.data.imagePath !== null) {
-        await prisma.beerPostImage.create({
+        await tx.beerPostImage.create({
           data: {
             postId: post.id,
             imageUrl: parsed.data.imagePath,
