@@ -1,6 +1,7 @@
 "use client";
 
 import { supabase } from "@/lib/supabase/supabaseClient";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
@@ -118,6 +119,14 @@ export function LoginForm() {
         >
           {isLoading ? "ログイン中..." : "ログイン"}
         </button>
+        <div className="text-center">
+          <Link
+            href="/signup"
+            className="text-sm font-semibold text-gray-700 hover:text-gray-900 underline underline-offset-4"
+          >
+            アカウント作成はこちら
+          </Link>
+        </div>
       </form>
 
       {error && (

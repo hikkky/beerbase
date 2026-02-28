@@ -8,7 +8,7 @@ type ProfileResponse = {
 };
 
 export function useMyPageHref() {
-  const [myPageHref, setMyPageHref] = useState("#");
+  const [myPageHref, setMyPageHref] = useState("/signup");
 
   useEffect(() => {
     let isMounted = true;
@@ -20,6 +20,10 @@ export function useMyPageHref() {
 
         const userId = userResult?.user?.id;
         if (userError || !userId) {
+          // 未ログイン時は /signup を設定
+          if (isMounted) {
+            setMyPageHref("/signup");
+          }
           return;
         }
 
@@ -32,6 +36,10 @@ export function useMyPageHref() {
         });
 
         if (!response.ok) {
+          // プロフィール取得失敗時も /signup を設定
+          if (isMounted) {
+            setMyPageHref("/signup");
+          }
           return;
         }
 
@@ -39,9 +47,16 @@ export function useMyPageHref() {
 
         if (profile.username && isMounted) {
           setMyPageHref(`/users/${profile.username}`);
+        } else if (isMounted) {
+          // username が存在しない場合も /signup を設定
+          setMyPageHref("/signup");
         }
       } catch (error) {
         console.error(error);
+        // エラー時も /signup を設定
+        if (isMounted) {
+          setMyPageHref("/signup");
+        }
       }
     };
 
