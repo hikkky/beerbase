@@ -1,4 +1,5 @@
 import { RadarChart } from "@/app/(home)/_components/RadarChart";
+import { DeletePostButton } from "@/components/DeletePostButton";
 import { getImageUrl } from "@/utils/getImageUrl";
 import Image from "next/image";
 import Link from "next/link";
@@ -87,7 +88,7 @@ export function PostDetail({ beerPost }: Props) {
               </div>
             </div>
           )}
-          <div>
+          <div className="flex items-center gap-2">
             <p className="text-sm text-gray-500">
               {beerPost.createdAt.toLocaleDateString("ja-JP", {
                 year: "numeric",
@@ -95,6 +96,11 @@ export function PostDetail({ beerPost }: Props) {
                 day: "2-digit",
               })}
             </p>
+            <DeletePostButton
+              postId={Number(beerPost.id)}
+              authorUserId={beerPost.user.id}
+              redirectTo="/"
+            />
           </div>
         </div>
 

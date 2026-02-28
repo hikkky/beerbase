@@ -5,6 +5,9 @@ export type BeerPost = BeerPosts[number];
 
 export async function fetchBeerPosts() {
   const beerPosts = await prisma.beerPost.findMany({
+    where: {
+      deletedAt: null,
+    },
     orderBy: {
       createdAt: "desc",
     },
