@@ -1,5 +1,11 @@
+"use client";
+
 import { getImageUrl } from "@/utils/getImageUrl";
 import Image from "next/image";
+import Link from "next/link";
+import { useEffect, useState } from "react";
+import { supabase } from "@/lib/supabase/supabaseClient";
+import { PencilIcon } from "@/components/icons";
 import { Profile } from "../_data/fetchProfile";
 
 interface Props {
@@ -7,10 +13,23 @@ interface Props {
 }
 
 export function ProfileArea({ profile }: Props) {
+  const [isOwnProfile, setIsOwnProfile] = useState(false);
   const avatarUrl = profile.avatar_url ? getImageUrl(profile.avatar_url) : null;
   const fallbackInitial = (profile.display_name ?? profile.username)
     .slice(0, 2)
     .toUpperCase();
+
+  useEffect(() => {
+    const checkOwnProfile = async () => {
+      const { data: userResult } = await supabase.auth.getUser();
+      const currentUserId = userResult?.user?.id;
+      if (currentUserId === profile.user_id) {
+        setIsOwnProfile(true);
+      }
+    };
+
+    checkOwnProfile();
+  }, [profile.user_id]);
 
   return (
     <div className="max-w-4xl space-y-8">
@@ -39,6 +58,15 @@ export function ProfileArea({ profile }: Props) {
             {profile.bio || "自己紹介はまだありません。"}
           </p>
         </div>
+        {isOwnProfile && (
+          <Link
+            href={`/users/${profile.username}/edit`}
+            className="flex items-center gap-2 px-4 py-2 rounded-full border border-gray-300 text-gray-700 hover:bg-gray-50 transition-colors text-sm font-medium"
+          >
+            <PencilIcon className="h-4 w-4" />
+            <span>編集</span>
+          </Link>
+        )}
       </section>
     </div>
   );
