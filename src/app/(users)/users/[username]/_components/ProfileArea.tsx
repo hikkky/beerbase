@@ -1,11 +1,11 @@
 "use client";
 
+import { PencilIcon } from "@/components/icons";
+import { supabase } from "@/lib/supabase/supabaseClient";
 import { getImageUrl } from "@/utils/getImageUrl";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { supabase } from "@/lib/supabase/supabaseClient";
-import { PencilIcon } from "@/components/icons";
 import { Profile } from "../_data/fetchProfile";
 
 interface Props {
@@ -34,17 +34,28 @@ export function ProfileArea({ profile }: Props) {
   return (
     <div className="max-w-4xl space-y-8">
       <section className="p-4 flex flex-col gap-4 md:flex-row md:items-center">
-        <div className="relative w-20 h-20 rounded-full overflow-hidden bg-gradient-to-br from-amber-200 to-amber-500 flex items-center justify-center text-2xl font-bold text-white">
-          {avatarUrl ? (
-            <Image
-              src={avatarUrl}
-              alt={`${profile.username}のアバター`}
-              fill
-              sizes="96px"
-              className="object-cover"
-            />
-          ) : (
-            <span>{fallbackInitial}</span>
+        <div className="flex items-center justify-between">
+          <div className="relative w-20 h-20 rounded-full overflow-hidden bg-gradient-to-br from-amber-200 to-amber-500 flex items-center justify-center text-2xl font-bold text-white">
+            {avatarUrl ? (
+              <Image
+                src={avatarUrl}
+                alt={`${profile.username}のアバター`}
+                fill
+                sizes="96px"
+                className="object-cover"
+              />
+            ) : (
+              <span>{fallbackInitial}</span>
+            )}
+          </div>
+          {isOwnProfile && (
+            <Link
+              href={`/users/${profile.username}/edit`}
+              className="flex items-center gap-2 px-4 py-2 rounded-full border border-gray-300 text-gray-700 hover:bg-gray-50 transition-colors text-sm font-medium"
+            >
+              <PencilIcon className="h-4 w-4" />
+              <span>編集</span>
+            </Link>
           )}
         </div>
         <div className="flex flex-col gap-2 flex-1">
@@ -58,15 +69,6 @@ export function ProfileArea({ profile }: Props) {
             {profile.bio || "自己紹介はまだありません。"}
           </p>
         </div>
-        {isOwnProfile && (
-          <Link
-            href={`/users/${profile.username}/edit`}
-            className="flex items-center gap-2 px-4 py-2 rounded-full border border-gray-300 text-gray-700 hover:bg-gray-50 transition-colors text-sm font-medium"
-          >
-            <PencilIcon className="h-4 w-4" />
-            <span>編集</span>
-          </Link>
-        )}
       </section>
     </div>
   );
