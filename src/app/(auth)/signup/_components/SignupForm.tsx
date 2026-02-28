@@ -30,8 +30,8 @@ export function SignupForm() {
       return;
     }
 
-    setMessage("サインアップしました。ログインしてください。");
-    router.push("/login");
+    setMessage("サインアップしました。プロフィールを設定してください。");
+    router.push("/setup");
   };
 
   return (

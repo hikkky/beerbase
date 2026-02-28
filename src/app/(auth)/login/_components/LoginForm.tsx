@@ -30,6 +30,35 @@ export function LoginForm() {
       return;
     }
 
+    // プロフィールの存在をチェック
+    try {
+      const { data: userResult } = await supabase.auth.getUser();
+      const userId = userResult?.user?.id;
+
+      if (userId) {
+        const response = await fetch("/api/me/profile", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ userId }),
+        });
+
+        if (response.ok) {
+          const profile = (await response.json()) as { username: string | null };
+          if (!profile.username) {
+            // プロフィールが存在しない場合はセットアップページへ
+            setMessage("ログインしました。プロフィールを設定してください。");
+            router.push("/setup");
+            return;
+          }
+        }
+      }
+    } catch (error) {
+      // プロフィールチェックに失敗した場合はデフォルトでホームへ
+      console.error("プロフィールチェックエラー:", error);
+    }
+
     setMessage("ログインしました。");
     router.push("/");
   };
