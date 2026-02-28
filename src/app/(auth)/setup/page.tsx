@@ -1,5 +1,5 @@
 import { SetupForm } from "./_components/SetupForm";
 
-export default function LoginPage() {
+export default function SetupPage() {
   return <SetupForm />;
 }
