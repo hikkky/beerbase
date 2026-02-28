@@ -2,11 +2,14 @@
 
 import { prisma } from "@/lib/prisma";
 
-export type BeerStyles = NonNullable<
-  Awaited<ReturnType<typeof fetchBeerStyles>>
->;
+export type BeerStyle = {
+  id: bigint;
+  name: string;
+};
 
-export async function fetchBeerStyles() {
+export type BeerStyles = BeerStyle[];
+
+export async function fetchBeerStyles(): Promise<BeerStyles> {
   const beerStyles = await prisma.beerStyle.findMany({
     select: {
       id: true,

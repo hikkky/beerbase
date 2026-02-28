@@ -32,8 +32,11 @@ export async function createPost(formData: FormData) {
   }
 
   try {
-    await prisma.$transaction(async (tx) => {
-      const post = await prisma.beerPost.create({
+    type TransactionClient = Parameters<
+      Parameters<typeof prisma.$transaction>[0]
+    >[0];
+    await prisma.$transaction(async (tx: TransactionClient) => {
+      const post = await tx.beerPost.create({
         data: {
           beerName: parsed.data.beerName,
           breweryName: parsed.data.breweryName,
@@ -52,7 +55,7 @@ export async function createPost(formData: FormData) {
       });
 
       if (parsed.data.imagePath !== null) {
-        await prisma.beerPostImage.create({
+        await tx.beerPostImage.create({
           data: {
             postId: post.id,
             imageUrl: parsed.data.imagePath,
