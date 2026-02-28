@@ -7,13 +7,14 @@ import { EditProfileForm } from "./_components/EditProfileForm";
 import { fetchProfile } from "../_data/fetchProfile";
 
 type PageProps = {
-  params: {
+  params: Promise<{
     username: string;
-  };
+  }>;
 };
 
 export default async function EditProfilePage({ params }: PageProps) {
-  const profile = await fetchProfile(params.username);
+  const { username } = await params;
+  const profile = await fetchProfile(username);
 
   if (!profile) {
     notFound();
@@ -35,4 +36,3 @@ export default async function EditProfilePage({ params }: PageProps) {
     </div>
   );
 }
-

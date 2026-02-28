@@ -7,10 +7,11 @@ import { PostDetail } from "./_components/PostDetail";
 import { fetchBeerPost } from "./_data/fetchBeerPost";
 
 export default async function PostDetailPage({
-  params: { postId },
+  params,
 }: {
-  params: { postId: string };
+  params: Promise<{ postId: string }>;
 }) {
+  const { postId } = await params;
   const beerPost = await fetchBeerPost(Number(postId));
   if (!beerPost) {
     return <div>Post not found</div>; // TODO: notFoundページへリダイレクト
