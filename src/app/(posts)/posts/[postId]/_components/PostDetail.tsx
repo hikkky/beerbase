@@ -1,6 +1,7 @@
 import { RadarChart } from "@/app/(home)/_components/RadarChart";
 import { getImageUrl } from "@/utils/getImageUrl";
 import Image from "next/image";
+import Link from "next/link";
 import { BeerPost } from "../_data/fetchBeerPost";
 
 interface Props {
@@ -29,32 +30,63 @@ export function PostDetail({ beerPost }: Props) {
     aromaScore: toNumber(beerPost.aromaScore),
     bitternessScore: toNumber(beerPost.bitternessScore),
   };
+  const profileHref = profile?.username
+    ? `/users/${profile.username}`
+    : null;
 
   return (
     <article className="border border-gray-200 rounded-xl md:p-6 p-4 shadow-sm bg-white hover:shadow-md transition-shadow">
       <div className="w-full flex flex-col gap-2">
         <div className="flex justify-between">
-          <div className="flex items-center gap-2">
-            <div className="relative w-8 h-8 rounded-full overflow-hidden bg-gradient-to-br from-amber-200 to-amber-500 flex items-center justify-center text-xs font-semibold text-white">
-              {avatarUrl ? (
-                <Image
-                  src={avatarUrl}
-                  alt={`${profile?.username ?? "user"}のアバター`}
-                  fill
-                  sizes="32px"
-                  className="object-cover"
-                />
-              ) : (
-                <span>{fallbackInitial}</span>
-              )}
+          {profileHref ? (
+            <Link
+              href={profileHref}
+              className="flex items-center gap-2"
+              aria-label={`${profile?.display_name ?? profile?.username}のプロフィールへ`}
+            >
+              <div className="relative w-8 h-8 rounded-full overflow-hidden bg-gradient-to-br from-amber-200 to-amber-500 flex items-center justify-center text-xs font-semibold text-white">
+                {avatarUrl ? (
+                  <Image
+                    src={avatarUrl}
+                    alt={`${profile?.username ?? "user"}のアバター`}
+                    fill
+                    sizes="32px"
+                    className="object-cover"
+                  />
+                ) : (
+                  <span>{fallbackInitial}</span>
+                )}
+              </div>
+              <div className="flex flex-wrap items-center gap-1">
+                <p className="text-sm">
+                  {profile?.display_name ?? profile?.username}
+                </p>
+                <p className="text-sm text-gray-500">@{profile?.username}</p>
+              </div>
+            </Link>
+          ) : (
+            <div className="flex items-center gap-2">
+              <div className="relative w-8 h-8 rounded-full overflow-hidden bg-gradient-to-br from-amber-200 to-amber-500 flex items-center justify-center text-xs font-semibold text-white">
+                {avatarUrl ? (
+                  <Image
+                    src={avatarUrl}
+                    alt={`${profile?.username ?? "user"}のアバター`}
+                    fill
+                    sizes="32px"
+                    className="object-cover"
+                  />
+                ) : (
+                  <span>{fallbackInitial}</span>
+                )}
+              </div>
+              <div className="flex flex-wrap items-center gap-1">
+                <p className="text-sm">
+                  {profile?.display_name ?? profile?.username}
+                </p>
+                <p className="text-sm text-gray-500">@{profile?.username}</p>
+              </div>
             </div>
-            <div className="flex flex-wrap items-center gap-1">
-              <p className="text-sm">
-                {profile?.display_name ?? profile?.username}
-              </p>
-              <p className="text-sm text-gray-500">@{profile?.username}</p>
-            </div>
-          </div>
+          )}
           <div>
             <p className="text-sm text-gray-500">
               {beerPost.createdAt.toLocaleDateString("ja-JP", {

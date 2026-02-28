@@ -31,15 +31,41 @@ export function PostItem({ post }: Props) {
     bitternessScore: toNumber(post.bitternessScore),
   };
 
+  const profileHref = profile?.username
+    ? `/users/${profile.username}`
+    : null;
+
   return (
-    <Link
-      href={`/posts/${post.id.toString()}`}
-      className="block"
-      aria-label={`${post.beerName}の投稿詳細へ`}
-    >
-      <article className="border border-gray-200 rounded-xl md:p-6 p-4 shadow-sm bg-white hover:shadow-md transition-shadow">
-        <div className="w-full flex flex-col gap-2">
-          <div className="flex justify-between">
+    <article className="border border-gray-200 rounded-xl md:p-6 p-4 shadow-sm bg-white hover:shadow-md transition-shadow">
+      <div className="w-full flex flex-col gap-2">
+        <div className="flex justify-between">
+          {profileHref ? (
+            <Link
+              href={profileHref}
+              className="flex items-center gap-2"
+              aria-label={`${profile?.display_name ?? profile?.username}のプロフィールへ`}
+            >
+              <div className="relative w-8 h-8 rounded-full overflow-hidden bg-gradient-to-br from-amber-200 to-amber-500 flex items-center justify-center text-xs font-semibold text-white">
+                {avatarUrl ? (
+                  <Image
+                    src={avatarUrl}
+                    alt={`${profile?.username ?? "user"}のアバター`}
+                    fill
+                    sizes="32px"
+                    className="object-cover"
+                  />
+                ) : (
+                  <span>{fallbackInitial}</span>
+                )}
+              </div>
+              <div className="flex flex-wrap items-center gap-1">
+                <p className="text-sm">
+                  {profile?.display_name ?? profile?.username}
+                </p>
+                <p className="text-sm text-gray-500">@{profile?.username}</p>
+              </div>
+            </Link>
+          ) : (
             <div className="flex items-center gap-2">
               <div className="relative w-8 h-8 rounded-full overflow-hidden bg-gradient-to-br from-amber-200 to-amber-500 flex items-center justify-center text-xs font-semibold text-white">
                 {avatarUrl ? (
@@ -61,17 +87,23 @@ export function PostItem({ post }: Props) {
                 <p className="text-sm text-gray-500">@{profile?.username}</p>
               </div>
             </div>
-            <div>
-              <p className="text-sm text-gray-500">
-                {post.createdAt.toLocaleDateString("ja-JP", {
-                  year: "numeric",
-                  month: "2-digit",
-                  day: "2-digit",
-                })}
-              </p>
-            </div>
+          )}
+          <div>
+            <p className="text-sm text-gray-500">
+              {post.createdAt.toLocaleDateString("ja-JP", {
+                year: "numeric",
+                month: "2-digit",
+                day: "2-digit",
+              })}
+            </p>
           </div>
+        </div>
 
+        <Link
+          href={`/posts/${post.id.toString()}`}
+          className="block"
+          aria-label={`${post.beerName}の投稿詳細へ`}
+        >
           <h2 className="px-1 text-xl font-semibold text-gray-900 border-b border-gray-300 pb-0.5">
             {post.beerName}
           </h2>
@@ -143,8 +175,8 @@ export function PostItem({ post }: Props) {
               </div>
             </div>
           </div>
-        </div>
-      </article>
-    </Link>
+        </Link>
+      </div>
+    </article>
   );
 }
