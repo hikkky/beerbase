@@ -1,7 +1,6 @@
 "use server";
 
 import { prisma } from "@/lib/prisma";
-import { Prisma } from "@prisma/client";
 import { postSchema } from "./postSchema";
 
 export async function createPost(formData: FormData) {
@@ -33,7 +32,10 @@ export async function createPost(formData: FormData) {
   }
 
   try {
-    await prisma.$transaction(async (tx: Prisma.TransactionClient) => {
+    type TransactionClient = Parameters<
+      Parameters<typeof prisma.$transaction>[0]
+    >[0];
+    await prisma.$transaction(async (tx: TransactionClient) => {
       const post = await tx.beerPost.create({
         data: {
           beerName: parsed.data.beerName,
