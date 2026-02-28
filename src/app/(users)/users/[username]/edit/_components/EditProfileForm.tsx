@@ -1,13 +1,13 @@
 "use client";
 
 import { PhotoIcon } from "@/components/icons";
-import { getImageUrl } from "@/utils/getImageUrl";
 import { supabase } from "@/lib/supabase/supabaseClient";
+import { getImageUrl } from "@/utils/getImageUrl";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
-import Link from "next/link";
-import { updateProfile } from "./actions/updateProfile";
 import { Profile } from "../../_data/fetchProfile";
+import { updateProfile } from "./actions/updateProfile";
 
 interface Props {
   profile: Profile;
@@ -21,7 +21,7 @@ export function EditProfileForm({ profile }: Props) {
   const [message, setMessage] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [previewUrl, setPreviewUrl] = useState<string | null>(
-    profile.avatar_url ? getImageUrl(profile.avatar_url) : null
+    profile.avatar_url ? getImageUrl(profile.avatar_url) : null,
   );
   const imageInputRef = useRef<HTMLInputElement | null>(null);
 
@@ -214,7 +214,7 @@ export function EditProfileForm({ profile }: Props) {
             disabled={isLoading}
             className="flex-1 px-6 py-3 rounded-full bg-black text-white font-semibold hover:opacity-90 transition disabled:opacity-60"
           >
-            {isLoading ? "更新中..." : "プロフィールを更新"}
+            {isLoading ? "更新中..." : "更新する"}
           </button>
         </div>
       </form>
@@ -234,4 +234,3 @@ export function EditProfileForm({ profile }: Props) {
     </div>
   );
 }
-
