@@ -1,3 +1,4 @@
+import { DeletePostButton } from "@/components/DeletePostButton";
 import { getImageUrl } from "@/utils/getImageUrl";
 import Image from "next/image";
 import Link from "next/link";
@@ -88,7 +89,7 @@ export function PostItem({ post }: Props) {
               </div>
             </div>
           )}
-          <div>
+          <div className="flex items-center gap-2">
             <p className="text-sm text-gray-500">
               {post.createdAt.toLocaleDateString("ja-JP", {
                 year: "numeric",
@@ -96,6 +97,10 @@ export function PostItem({ post }: Props) {
                 day: "2-digit",
               })}
             </p>
+            <DeletePostButton
+              postId={Number(post.id)}
+              authorUserId={post.user.id}
+            />
           </div>
         </div>
 

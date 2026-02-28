@@ -76,6 +76,7 @@ model BeerPost {
   bitternessScore Decimal         @map("bitterness_score") @db.Decimal(2, 1)
   createdAt       DateTime        @default(now()) @map("created_at") @db.Timestamptz(6)
   updatedAt       DateTime        @default(now()) @map("updated_at") @db.Timestamptz(6)
+  deletedAt       DateTime?       @map("deleted_at") @db.Timestamptz(6)
   styleId         BigInt?         @map("style_id")
   styleCustom     String?         @map("style_custom")
   countryCode     String?         @map("country_code") @db.Char(2)

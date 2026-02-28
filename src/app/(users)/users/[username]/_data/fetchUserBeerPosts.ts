@@ -8,6 +8,7 @@ export async function fetchUserBeerPosts(userId: string) {
     select: {
       id: true,
       beerName: true,
+      userId: true,
       images: {
         select: {
           imageUrl: true,
@@ -16,6 +17,7 @@ export async function fetchUserBeerPosts(userId: string) {
     },
     where: {
       userId,
+      deletedAt: null,
     },
     orderBy: {
       createdAt: "desc",

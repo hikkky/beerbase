@@ -3,8 +3,11 @@ import { prisma } from "@/lib/prisma";
 export type BeerPost = NonNullable<Awaited<ReturnType<typeof fetchBeerPost>>>;
 
 export async function fetchBeerPost(postId: number) {
-  return prisma.beerPost.findUnique({
-    where: { id: postId },
+  return prisma.beerPost.findFirst({
+    where: {
+      id: postId,
+      deletedAt: null,
+    },
     select: {
       id: true,
       beerName: true,
