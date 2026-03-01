@@ -5,6 +5,8 @@ import { Sidebar } from "../../components/Sidebar";
 import { PostList } from "./_components/PostList";
 import { fetchBeerPosts } from "./_data/fetchBeerPosts";
 
+export const dynamic = "force-dynamic";
+
 export default async function Home() {
   const beerPosts = await fetchBeerPosts();
 
