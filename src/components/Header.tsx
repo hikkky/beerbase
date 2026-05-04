@@ -27,8 +27,8 @@ export function Header() {
   }, []);
 
   return (
-    <header className="w-full h-16 flex items-center justify-between border-b border-gray-200 px-6 sticky top-0 bg-white/90 backdrop-blur z-10">
-      <h1 className="text-2xl font-bold">
+    <header className="w-full h-16 flex items-center justify-between border-b border-gray-200 px-6 md:px-10 sticky top-0 bg-white/90 backdrop-blur z-10">
+      <h1 className="text-2xl font-bold md:text-3xl">
         <Link href="/">BEERBASE</Link>
       </h1>
       <div className="flex items-center gap-3">
@@ -39,7 +39,7 @@ export function Header() {
           // ログイン済み: Postボタンを表示
           <Link
             href="/posts/new"
-            className="px-4 py-2 rounded-full bg-black text-white text-sm font-semibold transition flex items-center gap-2 hover:opacity-70"
+            className="px-4 py-2 md:px-5 rounded-full bg-black text-white text-sm font-semibold transition flex items-center gap-2 hover:opacity-70"
           >
             <span className="text-lg leading-none">＋</span>
             Post
@@ -49,13 +49,13 @@ export function Header() {
           <>
             <Link
               href="/signup"
-              className="px-4 py-2 rounded-full border border-gray-300 text-gray-700 text-sm font-semibold transition hover:bg-gray-50"
+              className="px-4 py-2 md:px-5 rounded-full border border-gray-300 text-gray-700 text-sm font-semibold transition hover:bg-gray-50"
             >
               会員登録
             </Link>
             <Link
               href="/login"
-              className="px-4 py-2 rounded-full bg-black text-white text-sm font-semibold transition hover:opacity-70"
+              className="px-4 py-2 md:px-5 rounded-full bg-black text-white text-sm font-semibold transition hover:opacity-70"
             >
               ログイン
             </Link>

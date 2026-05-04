@@ -23,11 +23,11 @@ export default async function EditProfilePage({ params }: PageProps) {
   // 認証チェックはServer Action内で行う
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col md:bg-gray-50">
       <Header />
       <div className="flex flex-1 min-h-[calc(100vh-8rem)] items-start">
         <Sidebar />
-        <main className="flex-1 md:p-8 p-2">
+        <main className="flex-1 md:p-10 p-2">
           <EditProfileForm profile={profile} />
         </main>
       </div>

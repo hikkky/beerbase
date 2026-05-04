@@ -11,11 +11,11 @@ export default async function Home() {
   const beerPosts = await fetchBeerPosts();
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col md:bg-gray-50">
       <Header />
       <div className="flex flex-1 min-h-[calc(100vh-8rem)] items-start">
         <Sidebar />
-        <main className="flex-1 md:p-8 p-2">
+        <main className="flex-1 md:p-10 p-2">
           <PostList beerPosts={beerPosts} />
         </main>
       </div>

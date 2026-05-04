@@ -7,7 +7,7 @@ interface Props {
 
 export function PostList({ beerPosts }: Props) {
   return (
-    <div className="w-full md:max-w-3xl md:space-y-6 space-y-4">
+    <div className="w-full md:max-w-5xl md:mx-auto md:space-y-8 space-y-4">
       {beerPosts.map((beerPost) => (
         <PostItem key={beerPost.id.toString()} post={beerPost} />
       ))}

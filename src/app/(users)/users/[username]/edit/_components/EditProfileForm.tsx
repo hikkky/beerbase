@@ -128,7 +128,7 @@ export function EditProfileForm({ profile }: Props) {
     : "group flex cursor-pointer items-center justify-center rounded-xl border border-dashed border-gray-200 px-6 py-10 transition-colors hover:border-amber-400 hover:bg-amber-50/40";
 
   return (
-    <div className="bg-white/80 backdrop-blur border border-amber-100 shadow-lg rounded-2xl p-8 space-y-8">
+    <div className="bg-white/80 backdrop-blur border border-amber-100 md:border-gray-200 shadow-lg md:shadow-sm rounded-2xl md:rounded-xl p-8 md:max-w-3xl md:mx-auto space-y-8">
       <header className="text-center space-y-2">
         <p className="text-sm font-medium text-amber-700">Edit Profile</p>
         <h1 className="text-3xl font-bold text-gray-900">プロフィール編集</h1>
