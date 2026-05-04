@@ -31,14 +31,12 @@ export function PostDetail({ beerPost }: Props) {
     aromaScore: toNumber(beerPost.aromaScore),
     bitternessScore: toNumber(beerPost.bitternessScore),
   };
-  const profileHref = profile?.username
-    ? `/users/${profile.username}`
-    : null;
+  const profileHref = profile?.username ? `/users/${profile.username}` : null;
 
   return (
-    <article className="border border-gray-200 rounded-xl md:p-6 p-4 shadow-sm bg-white hover:shadow-md transition-shadow">
-      <div className="w-full flex flex-col gap-2">
-        <div className="flex justify-between">
+    <article className="border border-gray-200 rounded-xl md:max-w-5xl md:mx-auto md:p-8 p-4 shadow-sm bg-white hover:shadow-md transition-shadow">
+      <div className="w-full flex flex-col gap-2 md:gap-5">
+        <div className="flex justify-between md:items-center">
           {profileHref ? (
             <Link
               href={profileHref}
@@ -58,8 +56,8 @@ export function PostDetail({ beerPost }: Props) {
                   <span>{fallbackInitial}</span>
                 )}
               </div>
-              <div className="flex flex-wrap items-center gap-1">
-                <p className="text-sm">
+              <div className="flex flex-wrap items-center gap-1 md:gap-2">
+                <p className="text-sm md:text-base">
                   {profile?.display_name ?? profile?.username}
                 </p>
                 <p className="text-sm text-gray-500">@{profile?.username}</p>
@@ -80,8 +78,8 @@ export function PostDetail({ beerPost }: Props) {
                   <span>{fallbackInitial}</span>
                 )}
               </div>
-              <div className="flex flex-wrap items-center gap-1">
-                <p className="text-sm">
+              <div className="flex flex-wrap items-center gap-1 md:gap-2">
+                <p className="text-sm md:text-base">
                   {profile?.display_name ?? profile?.username}
                 </p>
                 <p className="text-sm text-gray-500">@{profile?.username}</p>
@@ -104,49 +102,51 @@ export function PostDetail({ beerPost }: Props) {
           </div>
         </div>
 
-        <h2 className="px-1 text-xl font-semibold text-gray-900 border-b border-gray-300 pb-0.5">
+        <h2 className="px-1 text-xl md:text-2xl font-semibold text-gray-900 border-b border-gray-300 pb-0.5 md:pb-2">
           {beerPost.beerName}
         </h2>
-        <div className="w-full items-center flex gap-2">
-          <div className="flex w-1/2 flex-col gap-2">
-            <div className="flex flex-col gap-1">
+        <div className="w-full items-center flex gap-2 md:gap-8">
+          <div className="flex w-1/2 flex-col gap-2 md:gap-4">
+            <div className="flex flex-col gap-1 md:gap-2">
               <div className="flex w-full gap-2">
-                <dt className="w-16 shrink-0 bg-black px-1 py-0.5 text-xs font-semibold text-white">
+                <dt className="w-16 md:w-24 shrink-0 bg-black px-1 md:px-3 py-0.5 md:py-1 text-xs font-semibold text-white">
                   Country
                 </dt>
-                <dd className="flex-1 text-sm text-gray-900">
+                <dd className="flex-1 text-sm md:text-base text-gray-900">
                   {beerPost.countryCode}
                 </dd>
               </div>
               <div className="flex w-full gap-2">
-                <dt className="w-16 shrink-0 bg-black px-1 py-0.5 text-xs font-semibold text-white">
+                <dt className="w-16 md:w-24 shrink-0 bg-black px-1 md:px-3 py-0.5 md:py-1 text-xs font-semibold text-white">
                   Brewery
                 </dt>
-                <dd className="flex-1 text-sm text-gray-900">
+                <dd className="flex-1 text-sm md:text-base text-gray-900">
                   {beerPost.breweryName}
                 </dd>
               </div>
               <div className="flex w-full gap-2">
-                <dt className="w-16 shrink-0 bg-black px-1 py-0.5 text-xs font-semibold text-white">
+                <dt className="w-16 md:w-24 shrink-0 bg-black px-1 md:px-3 py-0.5 md:py-1 text-xs font-semibold text-white">
                   Style
                 </dt>
-                <dd className="flex-1 text-sm text-gray-900">
+                <dd className="flex-1 text-sm md:text-base text-gray-900">
                   {beerPost.style?.name}
                 </dd>
               </div>
               <div className="flex w-full gap-2">
-                <dt className="w-16 shrink-0 bg-black px-1 py-0.5 text-xs font-semibold text-white">
+                <dt className="w-16 md:w-24 shrink-0 bg-black px-1 md:px-3 py-0.5 md:py-1 text-xs font-semibold text-white">
                   ABV
                 </dt>
-                <dd className="flex-1 text-sm text-gray-900">
+                <dd className="flex-1 text-sm md:text-base text-gray-900">
                   {beerPost.abv?.toString()}%
                 </dd>
               </div>
               <div className="flex w-full gap-2">
-                <dt className="w-16 shrink-0 bg-black px-1 py-0.5 text-xs font-semibold text-white">
+                <dt className="w-16 md:w-24 shrink-0 bg-black px-1 md:px-3 py-0.5 md:py-1 text-xs font-semibold text-white">
                   IBU
                 </dt>
-                <dd className="flex-1 text-sm text-gray-900">{beerPost.ibu}</dd>
+                <dd className="flex-1 text-sm md:text-base text-gray-900">
+                  {beerPost.ibu}
+                </dd>
               </div>
             </div>
           </div>
@@ -166,11 +166,11 @@ export function PostDetail({ beerPost }: Props) {
         </div>
 
         <div>
-          <div className="flex items-center gap-2">
-            <div className="w-32 h-32">
+          <div className="flex items-center gap-2 md:gap-6">
+            <div className="w-32 h-32 md:w-44 md:h-44">
               <RadarChart className="w-full h-full" scores={scores} />
             </div>
-            <div className="flex-1 p-2 text-xs h-24 border border-dashed border-gray-300">
+            <div className="flex-1 p-2 md:p-4 text-xs md:text-sm h-24 md:h-36 border border-dashed border-gray-300">
               {beerPost.comment}
             </div>
           </div>

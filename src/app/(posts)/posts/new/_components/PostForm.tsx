@@ -123,7 +123,7 @@ export function PostForm({ beerStyles }: Props) {
 
     if (!result.success) {
       const messages = result.errors?.map(
-        (err: { message: string }) => err.message
+        (err: { message: string }) => err.message,
       ) ?? ["投稿に失敗しました"];
 
       setErrorMessages(messages);
@@ -143,9 +143,15 @@ export function PostForm({ beerStyles }: Props) {
   }, [previewUrl]);
 
   return (
-    <section className="gap-4">
-      <form onSubmit={handleSubmit} className="flex flex-col p-2 gap-4">
-        <label htmlFor="image" className={labelClassName}>
+    <section className="gap-4 md:max-w-5xl md:mx-auto">
+      <form
+        onSubmit={handleSubmit}
+        className="flex flex-col p-2 gap-4 md:grid md:grid-cols-[minmax(260px,360px)_1fr] md:gap-8 md:rounded-xl md:border md:border-gray-200 md:bg-white md:p-8 md:shadow-sm"
+      >
+        <label
+          htmlFor="image"
+          className={`${labelClassName} md:row-span-6 md:min-h-80 md:self-start`}
+        >
           <input
             id="image"
             name="image"
@@ -166,7 +172,7 @@ export function PostForm({ beerStyles }: Props) {
           )}
         </label>
 
-        <div className="space-y-1.5">
+        <div className="space-y-1.5 md:col-start-2">
           <label
             htmlFor="beerName"
             className="text-sm font-semibold text-gray-700"
@@ -185,7 +191,7 @@ export function PostForm({ beerStyles }: Props) {
           />
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:col-start-2">
           <div className="space-y-1.5">
             <label
               htmlFor="countryCode"
@@ -274,7 +280,7 @@ export function PostForm({ beerStyles }: Props) {
           </div>
         </div>
 
-        <div className="space-y-3">
+        <div className="space-y-3 md:col-start-2">
           <p className="text-sm font-semibold text-gray-700">
             Scores
             <span className="ml-2 inline-flex items-center rounded-full bg-rose-50 px-2 py-0.5 text-[10px] font-semibold text-rose-600">
@@ -316,7 +322,7 @@ export function PostForm({ beerStyles }: Props) {
           </div>
         </div>
 
-        <div className="space-y-1.5">
+        <div className="space-y-1.5 md:col-start-2">
           <label
             htmlFor="comment"
             className="text-sm font-semibold text-gray-700"
@@ -332,24 +338,24 @@ export function PostForm({ beerStyles }: Props) {
           />
         </div>
 
-        <div className="flex items-center justify-center gap-4">
+        <div className="flex items-center justify-center gap-4 md:col-start-2 md:justify-end">
           <button
             type="submit"
             disabled={isPending}
-            className="w-1/2 py-3 rounded-full bg-black text-white font-semibold hover:opacity-80 transition"
+            className="w-1/2 md:w-48 py-3 rounded-full bg-black text-white font-semibold hover:opacity-80 transition"
           >
             {isPending ? "Sending..." : "Post"}
           </button>
         </div>
         {errorMessages.length > 0 && (
-          <div className="text-sm text-red-600 bg-red-50 border border-red-100 rounded-lg px-3 py-2">
+          <div className="text-sm text-red-600 bg-red-50 border border-red-100 rounded-lg px-3 py-2 md:col-start-2">
             {errorMessages.map((error, index) => (
               <p key={index}>{error}</p>
             ))}
           </div>
         )}
         {successMessage && (
-          <p className="text-sm text-green-700 bg-green-50 border border-green-100 rounded-lg px-3 py-2">
+          <p className="text-sm text-green-700 bg-green-50 border border-green-100 rounded-lg px-3 py-2 md:col-start-2">
             {successMessage}
           </p>
         )}

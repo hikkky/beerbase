@@ -9,7 +9,7 @@ export function PreviewImage({ previewUrl, onRemove }: Props) {
       <img
         src={previewUrl}
         alt="選択した画像のプレビュー"
-        className="h-48 w-full object-cover"
+        className="h-48 w-full object-cover md:h-80"
       />
       <button
         type="button"
